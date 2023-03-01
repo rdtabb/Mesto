@@ -1,0 +1,27 @@
+.popup__submit {
+    border: none;
+    border-radius: 2px;
+    background: hsl(var(--bg-primary));
+    color: hsl(var(--clr-primary));
+    font-size: var(--fs-300);
+    text-align: center;
+    line-height: 22px;
+
+    margin: 0;
+    padding: 12px 0 16px;
+    box-sizing: border-box;
+
+    transition: opacity 200ms ease-in;
+    cursor: pointer;
+}
+
+.popup__submit:hover {
+    opacity: .8;
+}
+
+@media (max-width: 420px) {
+    .popup__submit {
+        font-size: 14px;
+        line-height: 17px;
+    }
+}

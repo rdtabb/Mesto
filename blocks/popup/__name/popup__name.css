@@ -1,0 +1,18 @@
+.popup__name {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid hsl(var(--bg-primary), .2);
+    font-size: 14px;
+    line-height: 17px;
+
+    margin: 0;
+    padding: 0 0 13px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 690px) {
+    .popup__name {
+        padding-bottom: 10px;
+    }
+}

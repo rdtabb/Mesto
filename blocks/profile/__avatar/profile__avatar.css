@@ -1,0 +1,11 @@
+.profile__avatar {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    display: block;
+    width: 120px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 100vmax;
+}

@@ -1,0 +1,13 @@
+.card__like {
+    width: 22px;
+    height: 19px;
+    border: none;
+    background: transparent url(../../../images/like.svg) no-repeat center;
+    background-size: cover;
+    transition: opacity 200ms ease-in;
+    cursor: pointer;
+}
+
+.card__like:hover {
+    opacity: .5;
+}

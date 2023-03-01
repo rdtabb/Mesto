@@ -1,0 +1,16 @@
+.footer__mesto {
+    color: hsl(var(--clr-accent));
+    font-size: var(--fs-300);
+    line-height: 22px;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 890px) {
+    .footer__mesto {
+        font-size: 14px;
+        line-height: 17px;
+    }
+}
