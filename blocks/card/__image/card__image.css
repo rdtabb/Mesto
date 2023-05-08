@@ -1,5 +1,6 @@
 .card__image {
     display: block;
+    position: relative;
     width: 100%;
     height: 282px;
     object-fit: cover;
@@ -8,7 +9,28 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    cursor: pointer;
 }
+
+/* .card__image-wrapper {
+    position: relative;
+}
+
+.card__image-wrapper::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background-color: black;
+    opacity: 0;
+    z-index: 100;
+    transition: opacity 200ms ease-in;
+    pointer-events: none;
+}
+
+.card__image-wrapper:hover::before {
+    opacity: .3;
+} */
 
 @media (max-width: 890px) {
     .card__image {

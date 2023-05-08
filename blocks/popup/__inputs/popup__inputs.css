@@ -1,0 +1,11 @@
+.popup__inputs {
+    display: grid;
+    gap: 27px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 420px) {
+    .popup__inputs {
+        margin-bottom: 45px;
+    }
+}

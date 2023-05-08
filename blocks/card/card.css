@@ -6,18 +6,5 @@
     box-sizing: border-box;
     border-radius: 10px;
     overflow: hidden;
-    max-height: 361px;
-    isolation: isolate;
-}
-
-@media (max-width: 890px) {
-    .card {
-        max-height: none;
-    }
-}
-
-@media (max-width: 320px) {
-    .card {
-        max-height: 361px;
-    }
+    position: relative;
 }

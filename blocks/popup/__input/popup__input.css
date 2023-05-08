@@ -1,4 +1,4 @@
-.popup__description {
+.popup__input {
     background: transparent;
     border: none;
     border-bottom: 1px solid hsl(var(--bg-primary), .2);
@@ -8,12 +8,22 @@
     margin: 0;
     padding: 0 0 13px;
     box-sizing: border-box;
-    margin-bottom: 40px;
+
+    transition: all 200ms ease-in;
+}
+
+.popup__input:hover {
+    border-bottom: 1px solid hsl(var(--bg-primary), .4);
+}
+
+.popup__input:focus, 
+.popup__input:focus-visible {
+    outline: none;
+    border-bottom: 1px solid hsl(var(--bg-primary));
 }
 
 @media (max-width: 420px) {
-    .popup__description {
-        margin-bottom: 45px;
+    .popup__input {
         padding-bottom: 10px;
     }
 }

@@ -17,7 +17,7 @@
 @media (max-width: 690px) {
     .profile {
         flex-direction: column;
-        gap: 36px;
+        gap: 34px;
         text-align: center;
         padding-inline: 19px;
 

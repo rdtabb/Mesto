@@ -7,6 +7,17 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    z-index: var(--z-300);
+}
+
+.popup[data-visible="false"] {
+    animation: fadeout linear 200ms;
+}
+
+.popup[data-visible="true"] {
+    animation: fadein linear 200ms;
+    opacity: 1;
 }
 
 .popup::before {
@@ -15,8 +26,25 @@
     inset: 0;
     background: hsl(var(--bg-primary), .5);
     z-index: var(--z-300); 
-
+    
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
