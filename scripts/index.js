@@ -66,6 +66,15 @@ function createCard(card) {
   cardElement.querySelector(".card__image").src = card.link;
   cardElement.querySelector(".card__image").alt = card.name;
   cardElement.querySelector(".card__description").textContent = card.name;
+  cardElement.querySelector('.card__like').addEventListener('click', handleLike)
+  cardElement.querySelector('.card__delete').addEventListener('click', handleDelete)
+  cardElement.querySelector('.card__image').addEventListener('click', (e) => {
+    const link = e.target.getAttribute("src");
+    const alt = e.target.getAttribute("alt");
+    popupCover.src = link;
+    popupCover.alt = alt;
+    openPopup(imagePopup);
+  })
   return cardElement;
 }
 function renderCards() {
