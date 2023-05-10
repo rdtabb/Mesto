@@ -1,7 +1,9 @@
 .popup {
     position: fixed;
-    display: none;
     place-items: center;
+    visibility: hidden;
+    opacity: 0;
+    display: grid;
     inset: 0;
 
     margin: 0;
@@ -9,15 +11,7 @@
     box-sizing: border-box;
 
     z-index: var(--z-300);
-}
-
-.popup[data-visible="false"] {
-    animation: fadeout linear 200ms;
-}
-
-.popup[data-visible="true"] {
-    animation: fadein linear 200ms;
-    opacity: 1;
+    transition: visibility 0s 200ms, opacity 200ms linear;
 }
 
 .popup::before {
@@ -32,14 +26,6 @@
     box-sizing: border-box;
 }
 
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
 @keyframes fadeout {
     from {
         opacity: 1;

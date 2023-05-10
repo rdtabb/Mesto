@@ -1,5 +1,3 @@
-// import { initialCards } from "./cards";
-
 const initialCards = [
   {
     link: "./images/lisboa.avif",
@@ -59,6 +57,8 @@ const buttonsClose = Array.from(document.querySelectorAll(".popup__close"));
 // ------------------------------------
 // render
 // ------------------------------------
+inputName.value = profileHeader.textContent
+inputStatus.value = profileDescription.textContent
 function createCard(card) {
   const cardElement = templateElement?.content
     .querySelector(".card")
@@ -71,6 +71,8 @@ function createCard(card) {
   cardElement.querySelector('.card__image').addEventListener('click', (e) => {
     const link = e.target.getAttribute("src");
     const alt = e.target.getAttribute("alt");
+    const caption = e.target.parentNode.nextElementSibling.querySelector('h2').textContent
+    popupCaption.textContent = caption
     popupCover.src = link;
     popupCover.alt = alt;
     openPopup(imagePopup);
@@ -132,21 +134,6 @@ formEditProfile.addEventListener("submit", (e) => {
 // ------------------------------------
 // Adding event listeners
 // ------------------------------------
-cardsButtonsLike.forEach((button) => {
-  button.addEventListener("click", handleLike);
-});
-cardButtonsDelete.forEach((button) => {
-  button.addEventListener("click", handleDelete);
-});
-cardImages.forEach((image) => {
-  image.addEventListener("click", (e) => {
-    const link = e.target.getAttribute("src");
-    const alt = e.target.getAttribute("alt");
-    popupCover.src = link;
-    popupCover.alt = alt;
-    openPopup(imagePopup);
-  });
-});
 buttonEditProfile.addEventListener("click", () => {
   openPopup(profilePopup);
 });

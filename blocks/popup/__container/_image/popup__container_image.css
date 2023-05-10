@@ -1,5 +1,9 @@
 .popup__container_image {
     padding: 0;
     background: transparent;
-    width: min(430px, 100% - 38px);
+    box-shadow: none;
+
+    max-width: 75vw;
+    width: auto;
+    max-height: 75vh;
 }

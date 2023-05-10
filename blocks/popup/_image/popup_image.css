@@ -1,0 +1,11 @@
+.popup_image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: hsl(var(--bg-primary), .9);
+    z-index: var(--z-300); 
+    
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

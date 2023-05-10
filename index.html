@@ -35,20 +35,20 @@
         </section>
     </main>
 
-    
+
     <footer class="footer">
         <p class="footer__mesto">&copy; 2023 Mesto Russia</p>
     </footer>
-    
+
     <div class="popup popup_profile">
         <div class="popup__container">
             <form name="popupForm" class="popup__form popup__form_profile">
                 <h2 class="popup__header">Редактировать профиль</h2>
                 <div class="popup__inputs">
-                    <input placeholder="Введите имя" required name="name" value="Жак-Ив Кусто" type="text"
-                    class="popup__input popup__input_type_name">
-                    <input placeholder="Введите профессию" required name="status" value="Исследователь океана"
-                    type="text" class="popup__input popup__input_type_description">
+                    <input placeholder="Введите имя" required name="name" type="text"
+                        class="popup__input popup__input_type_name">
+                    <input placeholder="Введите профессию" required name="status" type="text"
+                        class="popup__input popup__input_type_description">
                 </div>
                 <button type="submit" class="popup__submit popup__submit_edit">Сохранить</button>
             </form>
@@ -61,17 +61,17 @@
             <form name="popupForm" class="popup__form popup__form_addcard">
                 <h2 class="popup__header">Новое место</h2>
                 <div class="popup__inputs">
-                    <input placeholder="Название" required name="status"
-                    type="text" class="popup__input popup__input_type_place">
+                    <input placeholder="Название" required name="status" type="text"
+                        class="popup__input popup__input_type_place">
                     <input placeholder="Ссылка на картинку" required name="url" type="url"
-                    class="popup__input popup__input_type_url">
+                        class="popup__input popup__input_type_url">
                 </div>
                 <button type="submit" class="popup__submit popup__submit_addcart">Сохранить</button>
             </form>
             <button type="button" class="popup__close"></button>
         </div>
     </div>
-    
+
     <div class="popup popup_image">
         <div class="popup__container popup__container_image">
             <img class="popup__cover" src="" alt="">
@@ -79,7 +79,7 @@
             <button type="button" class="popup__close"></button>
         </div>
     </div>
-    
+
     <template id="card-template">
         <article class="card">
             <div class="card__image-wrapper">
