@@ -4,6 +4,7 @@
     border-bottom: 1px solid hsl(var(--bg-primary), .2);
     font-size: 14px;
     line-height: 17px;
+    width: 100%;
 
     margin: 0;
     padding: 0 0 13px;

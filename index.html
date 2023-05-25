@@ -42,13 +42,35 @@
 
     <div class="popup popup_profile">
         <div class="popup__container">
-            <form name="popupForm" class="popup__form popup__form_profile">
+            <form novalidate name="popupForm" class="popup__form popup__form_profile">
                 <h2 class="popup__header">Редактировать профиль</h2>
                 <div class="popup__inputs">
-                    <input placeholder="Введите имя" required name="name" type="text"
-                        class="popup__input popup__input_type_name">
-                    <input placeholder="Введите профессию" required name="status" type="text"
-                        class="popup__input popup__input_type_description">
+                    <fieldset class="popup__set">
+                        <input 
+                            placeholder="Введите имя" 
+                            required 
+                            minlength="2"
+                            maxlength="20"
+                            name="name" 
+                            type="text"
+                            id="text-input"
+                            class="popup__input popup__input_type_name"
+                        >
+                        <span class="popup__error text-input-error"></span>
+                    </fieldset>
+                    <fieldset class="popup__set">
+                        <input 
+                            placeholder="Введите профессию" 
+                            required 
+                            minlength="2"
+                            maxlength="200"
+                            name="status" 
+                            type="text"
+                            id="status-input"
+                            class="popup__input popup__input_type_description popup__input_type_description"
+                        >
+                        <span class="popup__error status-input-error"></span>
+                    </fieldset>
                 </div>
                 <button type="submit" class="popup__submit popup__submit_edit">Сохранить</button>
             </form>
@@ -61,10 +83,32 @@
             <form name="popupForm" class="popup__form popup__form_addcard">
                 <h2 class="popup__header">Новое место</h2>
                 <div class="popup__inputs">
-                    <input placeholder="Название" required name="status" type="text"
-                        class="popup__input popup__input_type_place">
-                    <input placeholder="Ссылка на картинку" required name="url" type="url"
-                        class="popup__input popup__input_type_url">
+                    <fieldset class="popup__set">
+                        <input 
+                            placeholder="Название" 
+                            required 
+                            name="status" 
+                            id="place-input"
+                            type="text"
+                            class="popup__input popup__input_type_place"
+                        >
+                        <span class="popup__error place-input-error">
+                            Название должно содержать только русские буквы
+                        </span>
+                    </fieldset>
+                    <fieldset class="popup__set">
+                        <input 
+                            placeholder="Ссылка на картинку" 
+                            required 
+                            name="url" 
+                            type="url"
+                            id="url-input"
+                            class="popup__input popup__input_type_url"
+                        >
+                        <span class="popup__error url-input-error">
+
+                        </span>
+                    </fieldset>
                 </div>
                 <button type="submit" class="popup__submit popup__submit_addcart">Сохранить</button>
             </form>
