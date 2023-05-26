@@ -50,7 +50,7 @@
                             placeholder="Введите имя" 
                             required 
                             minlength="2"
-                            maxlength="20"
+                            maxlength="40"
                             name="name" 
                             type="text"
                             id="text-input"
@@ -80,20 +80,21 @@
 
     <div class="popup popup_addcard">
         <div class="popup__container">
-            <form name="popupForm" class="popup__form popup__form_addcard">
+            <form novalidate name="popupForm" class="popup__form popup__form_addcard">
                 <h2 class="popup__header">Новое место</h2>
                 <div class="popup__inputs">
                     <fieldset class="popup__set">
                         <input 
                             placeholder="Название" 
                             required 
+                            minlength="2"
+                            maxlength="30"
                             name="status" 
                             id="place-input"
                             type="text"
                             class="popup__input popup__input_type_place"
                         >
                         <span class="popup__error place-input-error">
-                            Название должно содержать только русские буквы
                         </span>
                     </fieldset>
                     <fieldset class="popup__set">
