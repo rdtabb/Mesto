@@ -46,29 +46,16 @@
                 <h2 class="popup__header">Редактировать профиль</h2>
                 <div class="popup__inputs">
                     <fieldset class="popup__set">
-                        <input 
-                            placeholder="Введите имя" 
-                            required 
-                            minlength="2"
-                            maxlength="40"
-                            name="name" 
-                            type="text"
-                            id="text-input"
-                            class="popup__input popup__input_type_name"
-                        >
+                        <input placeholder="Введите имя" pattern="^[а-яА-Яёa-zA-Z\-\s]{2,40}$" required minlength="2" maxlength="40" name="name" type="text"
+                            data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
+                            id="text-input" class="popup__input popup__input_type_name">
                         <span class="popup__error text-input-error"></span>
                     </fieldset>
                     <fieldset class="popup__set">
-                        <input 
-                            placeholder="Введите профессию" 
-                            required 
-                            minlength="2"
-                            maxlength="200"
-                            name="status" 
-                            type="text"
-                            id="status-input"
+                        <input placeholder="Введите профессию" pattern="^[а-яА-Яёa-zA-Z\-\s]{2,200}$" required minlength="2" maxlength="200" name="status"
+                            type="text" id="status-input"
                             class="popup__input popup__input_type_description popup__input_type_description"
-                        >
+                            data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
                         <span class="popup__error status-input-error"></span>
                     </fieldset>
                 </div>
@@ -84,28 +71,14 @@
                 <h2 class="popup__header">Новое место</h2>
                 <div class="popup__inputs">
                     <fieldset class="popup__set">
-                        <input 
-                            placeholder="Название" 
-                            required 
-                            minlength="2"
-                            maxlength="30"
-                            name="status" 
-                            id="place-input"
-                            type="text"
-                            class="popup__input popup__input_type_place"
-                        >
+                        <input placeholder="Название" pattern="^[a-zA-Zа-яА-Яё\-\s]{2,30}$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required minlength="2" maxlength="30" name="status"
+                            id="place-input" type="text" class="popup__input popup__input_type_place">
                         <span class="popup__error place-input-error">
                         </span>
                     </fieldset>
                     <fieldset class="popup__set">
-                        <input 
-                            placeholder="Ссылка на картинку" 
-                            required 
-                            name="url" 
-                            type="url"
-                            id="url-input"
-                            class="popup__input popup__input_type_url"
-                        >
+                        <input placeholder="Ссылка на картинку" required name="url" type="url" id="url-input"
+                            class="popup__input popup__input_type_url">
                         <span class="popup__error url-input-error">
 
                         </span>

@@ -73,6 +73,7 @@ function createCard(card) {
     popupCover.src = link;
     popupCover.alt = alt;
     openPopup(imagePopup);
+    closePopupOnEsc(imagePopup)
   })
   return cardElement;
 }
@@ -106,12 +107,19 @@ function editProfile() {
   profileHeader.textContent = inputName.value
   profileDescription.textContent = inputStatus.value
 }
+function closePopupOnEsc(popupElement) {
+  window.addEventListener('keydown', (e) => {
+    if (e.key == 'Escape') {
+      closePopup(popupElement)
+    }
+  })
+}
 formAddCard.addEventListener("submit", (e) => {
   e.preventDefault();
   const newCard = {
     link: inputUrl.value,
     name: inputPlace.value,
-  };
+  };s
   inputUrl.value = "";
   inputPlace.value = "";
   addCard(newCard);
@@ -131,18 +139,20 @@ buttonEditProfile.addEventListener("click", () => {
   inputName.value = profileHeader.textContent
   inputStatus.value = profileDescription.textContent
   openPopup(profilePopup);
+  closePopupOnEsc(profilePopup)
 });
 buttonAddCard.addEventListener("click", () => {
   openPopup(addCardPopup);
+  closePopupOnEsc(addCardPopup)
 });
 buttonsClose.forEach((button) => {
   const buttonsPopup = button.closest('.popup');
   button.addEventListener('click', () => closePopup(buttonsPopup));
 });
+
 // ------------------------------------
 // Validation 
 // ------------------------------------
-
 const selectors = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -178,11 +188,19 @@ function toggleButtonState(selectors, inputList, buttonElement) {
     buttonElement.setAttribute("disabled", "true")
   } else {
     buttonElement.classList.remove(`${selectors.inactiveButtonClass}`)
-    buttonElement.setAttribute("disabled", "false")
+    buttonElement.removeAttribute("disabled")
   }
 }
 
-function checkInputValidity(selectors, formElement, inputElement) {
+function checkInputValidity(selectors, formElement, inputElement) {  
+  if (inputElement.validity.tooShort) {
+    inputElement.setCustomValidity(`Минимальная длина ${inputElement.getAttribute("minlength")} символа`)
+  } else if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(`${inputElement.getAttribute('data-error-message')}`) 
+  } else {
+    inputElement.setCustomValidity("")
+  }
+
   if (!inputElement.validity.valid) {
     showInputError(selectors, formElement, inputElement, inputElement.validationMessage)
   } else {
