@@ -4,7 +4,7 @@
   "description": "Место это социальная сеть где пользователи могут добавлять посты, лайкать посты других пользователей и редактировать свой профиль",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf dist && webpack",
+    "build": "webpack --mode production",
     "dev": "webpack serve"
   },
   "repository": {
@@ -22,7 +22,10 @@
     "@babel/core": "^7.22.1",
     "@babel/preset-env": "^7.22.4",
     "babel-loader": "^9.1.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.1",
+    "mini-css-extract-plugin": "^2.7.6",
     "webpack": "^5.83.1",
     "webpack-cli": "^5.1.1",
     "webpack-dev-server": "^4.15.0"
