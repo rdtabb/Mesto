@@ -119,7 +119,7 @@ const initialCards = [
     const newCard = {
       link: inputUrl.value,
       name: inputPlace.value,
-    };s
+    };
     inputUrl.value = "";
     inputPlace.value = "";
     addCard(newCard);

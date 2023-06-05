@@ -1,0 +1,15 @@
+.profile__info-wrapper {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 690px) {
+    .profile__info-wrapper {
+        gap: 10px;
+    }
+}

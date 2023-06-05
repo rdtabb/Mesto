@@ -1,4 +1,4 @@
-const initialCards = [
+export const initialCards = [
   {
     link: "./images/lisboa.avif",
     name: "Лиссабон",
@@ -25,7 +25,7 @@ const initialCards = [
   },
 ];
 
-function createCard(card) {
+export function createCard(card) {
   const cardElement = templateElement?.content
     .querySelector(".card")
     ?.cloneNode(true);
@@ -49,10 +49,11 @@ function createCard(card) {
   });
   return cardElement;
 }
-function renderCards() {
+export function renderCardsIm() {
   initialCards.forEach((el) => {
     const card = createCard(el);
     cardsSection.append(card);
   });
 }
-renderCards();
+
+

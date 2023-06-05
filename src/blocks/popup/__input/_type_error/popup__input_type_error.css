@@ -1,0 +1,12 @@
+.popup__input_type_error {
+    border-bottom-color: hsl(var(--clr-error));
+}
+
+.popup__input_type_error:hover {
+    border-bottom-color: hsl(var(--clr-error));
+}
+
+.popup__input_type_error:focus,
+.popup__input_type_error:focus-visible {
+    border-bottom-color: hsl(var(--clr-error));
+}
