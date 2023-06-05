@@ -6,6 +6,7 @@
     font-size: var(--fs-300);
     text-align: center;
     line-height: 22px;
+    border: 1px solid black;
 
     margin: 0;
     padding: 12px 0 16px;

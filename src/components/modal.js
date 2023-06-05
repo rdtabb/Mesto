@@ -1,6 +1,5 @@
 import { createCard } from "./card";
 import { cardsSection, profileHeader, profileDescription, inputName, inputStatus } from "..";
-
 function openPopup(popupElement) {
   popupElement.classList.add("popup_opened");
 }
@@ -22,5 +21,4 @@ function editProfile() {
   profileHeader.textContent = inputName.value;
   profileDescription.textContent = inputStatus.value;
 }
-
 export { openPopup, closePopup, closePopupOnEsc, addCard, editProfile };
