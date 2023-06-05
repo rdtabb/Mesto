@@ -1,30 +1,38 @@
-export const initialCards = [
+import { handleDelete, handleLike} from "./utils";
+import { openPopup, closePopupOnEsc } from "./modal";
+import { templateElement, cardsSection, popupCaption, popupCover, imagePopup } from "..";
+const lisboaImage = new URL("../images/lisboa.avif", import.meta.url);
+const tokyoImage = new URL("../images/tokyo.avif", import.meta.url);
+const chicagoImage = new URL("../images/chicago.avif", import.meta.url);
+const fortalezaImage = new URL("../images/fortaleza.avif", import.meta.url);
+const istanbulImage = new URL("../images/istanbul.avif", import.meta.url);
+const baliImage = new URL("../images/bali.avif", import.meta.url);
+const initialCards = [
   {
-    link: "./images/lisboa.avif",
+    link: lisboaImage,
     name: "Лиссабон",
   },
   {
-    link: "./images/tokyo.avif",
+    link: tokyoImage,
     name: "Токио",
   },
   {
-    link: "./images/chicago.avif",
+    link: chicagoImage,
     name: "Чикаго",
   },
   {
-    link: "./images/fortaleza.avif",
+    link: fortalezaImage,
     name: "Форталеза",
   },
   {
-    link: "./images/istanbul.avif",
+    link: istanbulImage,
     name: "Стамбул",
   },
   {
-    link: "./images/bali.avif",
+    link: baliImage,
     name: "Бали",
   },
 ];
-
 export function createCard(card) {
   const cardElement = templateElement?.content
     .querySelector(".card")
@@ -49,11 +57,9 @@ export function createCard(card) {
   });
   return cardElement;
 }
-export function renderCardsIm() {
+export default function renderCards() {
   initialCards.forEach((el) => {
     const card = createCard(el);
     cardsSection.append(card);
   });
 }
-
-
