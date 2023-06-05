@@ -13,7 +13,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    z-index: 200;
 
     cursor: pointer;
     transition: opacity 200ms ease-in;

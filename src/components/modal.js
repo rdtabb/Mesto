@@ -13,6 +13,11 @@ function closePopupOnEsc(popupElement) {
     }
   });
 }
+function closePopupOnOverlay(popupElement) {
+  popupElement.addEventListener('click', () => {
+    closePopup(popupElement)
+  })
+}
 function addCard(card) {
   const cardEl = createCard(card);
   cardsSection.prepend(cardEl);
