@@ -7,5 +7,6 @@ https://rdtabb.github.io/Mesto.github.io/
 ## Технологии
  - HTML5/CSS/JS
  - БЭМ
+ - Webpack
 
 

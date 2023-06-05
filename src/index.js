@@ -1,9 +1,11 @@
+import './pages/index.css'
 const lisboaImage = new URL("./images/lisboa.avif", import.meta.url)
 const tokyoImage = new URL("./images/tokyo.avif", import.meta.url)
 const chicagoImage = new URL("./images/chicago.avif", import.meta.url)
 const fortalezaImage = new URL("./images/fortaleza.avif", import.meta.url)
 const istanbulImage = new URL("./images/istanbul.avif", import.meta.url)
 const baliImage = new URL("./images/bali.avif", import.meta.url)
+
 
 const initialCards = [
   {
