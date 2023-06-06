@@ -1,22 +1,31 @@
 import { createCard } from "./card";
-import { cardsSection, profileHeader, profileDescription, inputName, inputStatus } from "..";
+import {
+  cardsSection,
+  profileHeader,
+  profileDescription,
+  inputName,
+  inputStatus,
+} from "../pages";
 function openPopup(popupElement) {
   popupElement.classList.add("popup_opened");
+  document.addEventListener("keydown", closePopupEsc);
+  popupElement.addEventListener("click", closePopupOnOverlay);
 }
 function closePopup(popupElement) {
   popupElement.classList.remove("popup_opened");
+  document.removeEventListener("keydown", closePopupEsc);
+  popupElement.removeEventListener("click", closePopupOnOverlay);
 }
-function closePopupOnEsc(popupElement) {
-  window.addEventListener("keydown", (e) => {
-    if (e.key == "Escape") {
-      closePopup(popupElement);
-    }
-  });
+function closePopupEsc(e) {
+  const popup = document.querySelector(".popup_opened");
+  if (e.key == "Escape") {
+    closePopup(popup);
+  }
 }
-function closePopupOnOverlay(popupElement) {
-  popupElement.addEventListener('click', () => {
-    closePopup(popupElement)
-  })
+function closePopupOnOverlay(e) {
+  const popup = document.querySelector(".popup_opened");
+  if (e.target != popup) return;
+  closePopup(popup);
 }
 function addCard(card) {
   const cardEl = createCard(card);
@@ -26,4 +35,4 @@ function editProfile() {
   profileHeader.textContent = inputName.value;
   profileDescription.textContent = inputStatus.value;
 }
-export { openPopup, closePopup, closePopupOnEsc, addCard, editProfile };
+export { openPopup, closePopup, addCard, editProfile };

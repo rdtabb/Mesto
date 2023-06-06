@@ -18,7 +18,7 @@
     position: absolute;
     inset: 0;
     background: hsl(var(--bg-primary), .5);
-    z-index: var(--z-300); 
+    /* z-index: var(--z-300);  */
     cursor: pointer;
     
     margin: 0;

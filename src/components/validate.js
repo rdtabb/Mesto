@@ -27,7 +27,7 @@ function hasInvalidInput(inputList) {
   });
 }
 
-function toggleButtonState(selectors, inputList, buttonElement) {
+export function toggleButtonState(selectors, inputList, buttonElement) {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(`${selectors.inactiveButtonClass}`);
     buttonElement.setAttribute("disabled", "true");
@@ -37,7 +37,7 @@ function toggleButtonState(selectors, inputList, buttonElement) {
   }
 }
 
-function checkInputValidity(selectors, formElement, inputElement) {
+export function checkInputValidity(selectors, formElement, inputElement) {
   if (inputElement.validity.tooShort) {
     inputElement.setCustomValidity(
       `Минимальная длина ${inputElement.getAttribute("minlength")} символа`
@@ -62,6 +62,13 @@ function checkInputValidity(selectors, formElement, inputElement) {
   }
 }
 
+// export function checkInputValidityOnOpen(formElement, selectors) {
+//   const inputElements = Array.from(formElement.querySelectorAll(`${selectors.inputSelector}`))
+//   inputElements.forEach((inputElement) => {
+//     checkInputValidity(selectors, formElement, inputElement)
+//   })
+// }
+
 function setEventListeners(selectors, formElement) {
   const inputList = Array.from(
     formElement.querySelectorAll(`${selectors.inputSelector}`)
@@ -78,7 +85,7 @@ function setEventListeners(selectors, formElement) {
   });
 }
 
-export default function enableValidation(selectors) {
+export function enableValidation(selectors) {
   const formList = Array.from(
     document.querySelectorAll(`${selectors.formSelector}`)
   );

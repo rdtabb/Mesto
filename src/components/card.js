@@ -1,6 +1,6 @@
 import { handleDelete, handleLike} from "./utils";
-import { openPopup, closePopupOnEsc } from "./modal";
-import { templateElement, cardsSection, popupCaption, popupCover, imagePopup } from "..";
+import { openPopup } from "./modal";
+import { templateElement, cardsSection, popupCaption, popupCover, imagePopup } from "../pages";
 const lisboaImage = new URL("../images/lisboa.avif", import.meta.url);
 const tokyoImage = new URL("../images/tokyo.avif", import.meta.url);
 const chicagoImage = new URL("../images/chicago.avif", import.meta.url);
@@ -53,7 +53,6 @@ export function createCard(card) {
     popupCover.src = link;
     popupCover.alt = alt;
     openPopup(imagePopup);
-    closePopupOnEsc(imagePopup);
   });
   return cardElement;
 }
