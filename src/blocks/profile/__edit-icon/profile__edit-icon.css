@@ -1,0 +1,10 @@
+.profile__edit-icon {
+    position: absolute;
+    content: "";
+    inset: 0;
+    margin: auto;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 300ms linear;
+}

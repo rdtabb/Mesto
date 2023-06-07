@@ -1,0 +1,19 @@
+.profile__avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+.profile__avatar-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: hsl(var(--bg-primary), 0);
+    transition: background-color 300ms linear;
+    z-index: 100;
+    pointer-events: none;
+}
+.profile__avatar-wrapper:hover::before {
+    background-color: hsl(var(--bg-primary), .8);
+}
+.profile__avatar-wrapper:hover .profile__edit-icon {
+    opacity: 1;
+}
