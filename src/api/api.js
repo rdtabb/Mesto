@@ -2,6 +2,14 @@ const ME_ID = "5ee88334-f64d-4a57-bbca-c763324e5fde";
 const GROUP_ID = "plus-cohort-25";
 const BASE_URL = `https://mesto.nomoreparties.co/v1/${GROUP_ID}`;
 
+const config = {
+  base_url: `https://mesto.nomoreparties.co/v1/${GROUP_ID}`,
+  headers: {
+    authorization: ME_ID,
+    "Content-Type": "application/json",
+  }
+}
+
 function handleGetPosts() {
   try {
     return fetch(`${BASE_URL}/cards`, {
@@ -26,7 +34,7 @@ function handleGetUserData() {
     })
       .then((res) => {
         if (!res.ok) {
-          Promise.reject('buddy you nuts?')
+          return Promise.reject('buddy you nuts?')
         };
         return res.json()
       })
@@ -34,9 +42,9 @@ function handleGetUserData() {
     console.log(err);
   }
 }
-async function handleChangeUserData(name, about) {
+function handleChangeUserData(name, about) {
   try {
-    await fetch(`${BASE_URL}/users/me`, {
+    return fetch(`${BASE_URL}/users/me`, {
       method: "PATCH",
       headers: {
         authorization: ME_ID,
@@ -46,14 +54,16 @@ async function handleChangeUserData(name, about) {
         name,
         about,
       }),
-    });
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result))
   } catch (err) {
     console.log(err);
   }
 }
-async function handleChangeUserAvatar(avatar) {
+function handleChangeUserAvatar(avatar) {
   try {
-    await fetch(`${BASE_URL}/users/me/avatar`, {
+    return fetch(`${BASE_URL}/users/me/avatar`, {
       method: "PATCH",
       headers: {
         authorization: ME_ID,
@@ -62,7 +72,9 @@ async function handleChangeUserAvatar(avatar) {
       body: JSON.stringify({
         avatar,
       }),
-    });
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result))
   } catch (err) {
     console.log(err);
   }
@@ -101,6 +113,30 @@ function handleDeleteCard(id) {
     console.log(err)
   }
 }
+function handleLike(id) {
+  try {
+    return fetch(`${config.base_url}/cards/likes/${id}`, {
+      method: "PUT",
+      headers: config.headers
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result))
+  } catch(err) {
+    console.log(err)
+  }
+}
+function handleUnlike(id) {
+  try {
+    return fetch(`${config.base_url}/cards/likes/${id}`, {
+      method: "DELETE",
+      headers: config.headers
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result))
+  } catch(err) {
+    console.log(err)
+  }
+}
 
 export {
   handleAddCard,
@@ -108,5 +144,7 @@ export {
   handleGetUserData,
   handleChangeUserData,
   handleChangeUserAvatar,
-  handleDeleteCard
+  handleDeleteCard,
+  handleLike,
+  handleUnlike
 };
