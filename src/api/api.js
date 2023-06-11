@@ -16,16 +16,20 @@ function handleGetPosts() {
     console.log(err);
   }
 }
-async function handleGetUserData() {
+function handleGetUserData() {
   try {
-    const result = await fetch(`${BASE_URL}/users/me`, {
+    return fetch(`${BASE_URL}/users/me`, {
       headers: {
         authorization: ME_ID,
         "Content-Type": "application/json",
       },
-    });
-    if (!result.ok) return;
-    return result.json();
+    })
+      .then((res) => {
+        if (!res.ok) {
+          Promise.reject('buddy you nuts?')
+        };
+        return res.json()
+      })
   } catch (err) {
     console.log(err);
   }
@@ -63,5 +67,46 @@ async function handleChangeUserAvatar(avatar) {
     console.log(err);
   }
 }
+function handleAddCard(card) {
+  try {
+    return fetch(`${BASE_URL}/cards`, {
+      method: "POST",
+      headers: {
+        authorization: ME_ID,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: card.name,
+        link: card.link,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result));
+  } catch (err) {
+    console.log(err);
+  }
+}
+function handleDeleteCard(id) {
+  try {
+    return fetch(`${BASE_URL}/cards/${id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: ME_ID,
+        "Content-Type": "application/json"
+      }
+    })
+      .then((res) => res.json())
+      .then((result) => console.log(result))
+  } catch(err) {
+    console.log(err)
+  }
+}
 
-export { handleGetPosts, handleGetUserData, handleChangeUserData, handleChangeUserAvatar };
+export {
+  handleAddCard,
+  handleGetPosts,
+  handleGetUserData,
+  handleChangeUserData,
+  handleChangeUserAvatar,
+  handleDeleteCard
+};

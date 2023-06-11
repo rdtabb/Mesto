@@ -1,17 +1,13 @@
 import "./index.css";
-import {
-  selectors,
-  enableValidation,
-  toggleButtonState,
-} from "../components/validate";
+import { selectors, enableValidation, toggleButtonState } from "../components/validate";
 import renderCards from "../components/card";
+import { closePopup, openPopup } from "../components/modal";
 import {
-  addCard,
-  editProfile,
-  closePopup,
-  openPopup,
-} from "../components/modal";
-import { handleChangeUserData, handleGetUserData, handleChangeUserAvatar } from "../api/api";
+  handleChangeUserData,
+  handleGetUserData,
+  handleChangeUserAvatar,
+  handleAddCard,
+} from "../api/api";
 // ------------------------------------------------------------------------------------------------------------
 export const templateElement = document.querySelector("#card-template");
 export const cardsSection = document.querySelector(".cards");
@@ -22,7 +18,7 @@ export const popupCover = document.querySelector(".popup__cover");
 export const popupCaption = document.querySelector(".popup__caption");
 export const formEditProfile = document.querySelector(".popup__form_profile");
 export const formAddCard = document.querySelector(".popup__form_addcard");
-const formEditAvatar = document.querySelector(".popup__form_avatar")
+const formEditAvatar = document.querySelector(".popup__form_avatar");
 export const inputUrl = document.querySelector(".popup__input_type_url");
 export const inputPlace = document.querySelector(".popup__input_type_place");
 export const inputName = document.querySelector(".popup__input_type_name");
@@ -33,10 +29,8 @@ export const buttonAddCard = document.querySelector(".profile__add-button");
 export const profilePopup = document.querySelector(".popup_profile");
 export const addCardPopup = document.querySelector(".popup_addcard");
 export const imagePopup = document.querySelector(".popup_image");
-const avatarPopup = document.querySelector(".popup_avatar")
-export const buttonsClose = Array.from(
-  document.querySelectorAll(".popup__close")
-);
+const avatarPopup = document.querySelector(".popup_avatar");
+export const buttonsClose = Array.from(document.querySelectorAll(".popup__close"));
 // ------------------------------------------------------------------------------------------------------------
 renderCards();
 handleGetUserData().then((data) => {
@@ -44,29 +38,27 @@ handleGetUserData().then((data) => {
   profileHeader.textContent = data.name;
   profileAvatar.src = data.avatar;
 });
+
 // ------------------------------------------------------------------------------------------------------------
 formAddCard.addEventListener("submit", (e) => {
   e.preventDefault();
   const addPopup = formAddCard.closest(".popup");
-  const newCard = {
+  const card = {
     link: inputUrl.value,
     name: inputPlace.value,
   };
-  addCard(newCard);
+  handleAddCard(card);
   closePopup(addPopup);
   formAddCard.reset();
 
-  const inputList = Array.from(
-    formAddCard.querySelectorAll(`${selectors.inputSelector}`)
-  );
-  const buttonElement = formAddCard.querySelector(
-    `${selectors.submitButtonSelector}`
-  );
+  const inputList = Array.from(formAddCard.querySelectorAll(`${selectors.inputSelector}`));
+  const buttonElement = formAddCard.querySelector(`${selectors.submitButtonSelector}`);
   toggleButtonState(selectors, inputList, buttonElement);
 });
+
+
 formEditProfile.addEventListener("submit", (e) => {
   e.preventDefault();
-  // editProfile();
   handleChangeUserData(inputName.value, inputStatus.value).then(() => {
     handleGetUserData().then((data) => {
       profileDescription.textContent = data.about;
@@ -77,8 +69,10 @@ formEditProfile.addEventListener("submit", (e) => {
   const editPopup = formEditProfile.closest(".popup");
   closePopup(editPopup);
 });
-formEditAvatar.addEventListener('submit', (e) => {
-  e.preventDefault()
+
+
+formEditAvatar.addEventListener("submit", (e) => {
+  e.preventDefault();
   handleChangeUserAvatar(inputAvatar.value).then(() => {
     handleGetUserData().then((data) => {
       profileDescription.textContent = data.about;
@@ -86,19 +80,28 @@ formEditAvatar.addEventListener('submit', (e) => {
       profileAvatar.src = data.avatar;
     });
   });
-  closePopup(avatarPopup)
-})
+  inputAvatar.value = "";
+  closePopup(avatarPopup);
+});
+
+
 profileAvatar.addEventListener("click", () => {
-  openPopup(avatarPopup)
-})
+  openPopup(avatarPopup);
+});
+
+
 buttonEditProfile.addEventListener("click", () => {
   inputName.value = profileHeader.textContent;
   inputStatus.value = profileDescription.textContent;
   openPopup(profilePopup);
 });
+
+
 buttonAddCard.addEventListener("click", () => {
   openPopup(addCardPopup);
 });
+
+
 buttonsClose.forEach((button) => {
   const buttonsPopup = button.closest(".popup");
   button.addEventListener("click", () => closePopup(buttonsPopup));
