@@ -1,4 +1,5 @@
 import renderCards from "../components/card";
+import clearCardsSection from "../components/utils";
 
 const config = {
   base_url: `https://mesto.nomoreparties.co/v1/plus-cohort-25`,
@@ -85,6 +86,7 @@ function handleAddCard(card) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
+      .then(() => { clearCardsSection() })
       .then(() => { renderCards() })
       .catch((err) => console.log(err))
   } catch (err) {
@@ -101,6 +103,7 @@ function handleDeleteCard(id) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
+      .then(() => { clearCardsSection() })
       .then(() => { renderCards() })
       .catch((err) => console.log(err));
   } catch (err) {
@@ -117,7 +120,11 @@ function handleLike(id) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
-      .then(() => { renderCards() });
+      .then(() => { 
+        clearCardsSection()
+        //just bloody nothing works
+        renderCards() 
+      });
   } catch (err) {
     console.log(err);
   }
@@ -132,6 +139,7 @@ function handleUnlike(id) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
+      .then(() => { clearCardsSection() })
       .then(() => { renderCards() });
   } catch (err) {
     console.log(err);

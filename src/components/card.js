@@ -58,10 +58,6 @@ export function createCard(card, id) {
 }
 
 export default function renderCards() {
-  const childrenElements = Array.from(cardsSection.children);
-  childrenElements.forEach((el) => {
-    cardsSection.remove(el);
-  });
   handleGetUserData().then((data) => {
     handleGetPosts().then((posts) => {
       posts.forEach((post) => {
