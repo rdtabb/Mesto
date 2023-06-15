@@ -47,7 +47,7 @@ formAddCard.addEventListener("submit", (e) => {
     link: inputUrl.value,
     name: inputPlace.value,
   };
-  handleAddCard(card);
+  handleAddCard(card)
   closePopup(addPopup);
   formAddCard.reset();
 

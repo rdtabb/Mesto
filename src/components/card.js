@@ -14,13 +14,7 @@ import {
   handleUnlike,
 } from "../api/api";
 
-let id;
-handleGetUserData().then((data) => {
-  id = data._id;
-});
-
-
-export function createCard(card) {
+export function createCard(card, id) {
   const cardElement = templateElement?.content
     .querySelector(".card")
     ?.cloneNode(true);
@@ -29,19 +23,20 @@ export function createCard(card) {
   cardElement.querySelector(".card__description").textContent = card.name;
   cardElement.querySelector(".card__number").textContent = card.likes.length;
 
-  card.likes.forEach((like) => {
-    if (like._id == id) {
-      cardElement.querySelector('.card__like').classList.add('card__like_true')
-      cardElement.querySelector('.card__like').addEventListener('click', () => {
-        handleUnlike(card._id)
-      })
-    } else {
-      cardElement.querySelector('.card__like').classList.remove('card__like_true')
-      cardElement.querySelector('.card__like').addEventListener('click', () => {
-        handleLike(card._id)
-      })
-    }
-  })
+  const liked = card.likes.some((like) => like._id == id);
+  if (liked) {
+    cardElement.querySelector(".card__like").classList.add("card__like_true");
+    cardElement.querySelector(".card__like").addEventListener("click", () => {
+      handleUnlike(card._id);
+    });
+  } else {
+    cardElement
+      .querySelector(".card__like")
+      .classList.remove("card__like_true");
+    cardElement.querySelector(".card__like").addEventListener("click", () => {
+      handleLike(card._id);
+    });
+  }
 
   if (card.owner._id == id) {
     cardElement.querySelector(".card__delete").addEventListener("click", () => {
@@ -63,10 +58,16 @@ export function createCard(card) {
 }
 
 export default function renderCards() {
-  handleGetPosts().then((data) => {
-    data.forEach((el) => {
-      const card = createCard(el);
-      cardsSection.append(card);
+  const childrenElements = Array.from(cardsSection.children);
+  childrenElements.forEach((el) => {
+    cardsSection.remove(el);
+  });
+  handleGetUserData().then((data) => {
+    handleGetPosts().then((posts) => {
+      posts.forEach((post) => {
+        const card = createCard(post, data._id);
+        cardsSection.append(card);
+      });
     });
   });
 }
