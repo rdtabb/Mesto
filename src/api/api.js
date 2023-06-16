@@ -46,11 +46,10 @@ function handleChangeUserData(name, about) {
         name,
         about,
       }),
-    })
-      .then((res) => {
-        if (!res.ok) return Promise.reject("Ошибка");
-        return res.json();
-      })
+    }).then((res) => {
+      if (!res.ok) return Promise.reject("Ошибка");
+      return res.json();
+    });
   } catch (err) {
     console.log(err);
   }
@@ -63,11 +62,10 @@ function handleChangeUserAvatar(avatar) {
       body: JSON.stringify({
         avatar,
       }),
-    })
-      .then((res) => {
-        if (!res.ok) return Promise.reject("Ошибка");
-        return res.json();
-      })
+    }).then((res) => {
+      if (!res.ok) return Promise.reject("Ошибка");
+      return res.json();
+    });
   } catch (err) {
     console.log(err);
   }
@@ -86,9 +84,10 @@ function handleAddCard(card) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
-      .then(() => { clearCardsSection() })
-      .then(() => { renderCards() })
-      .catch((err) => console.log(err))
+      .then(() => {
+        renderCards();
+      })
+      .catch((err) => console.log(err));
   } catch (err) {
     console.log(err);
   }
@@ -103,8 +102,9 @@ function handleDeleteCard(id) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
-      .then(() => { clearCardsSection() })
-      .then(() => { renderCards() })
+      .then(() => {
+        renderCards();
+      })
       .catch((err) => console.log(err));
   } catch (err) {
     console.log(err);
@@ -120,10 +120,8 @@ function handleLike(id) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
-      .then(() => { 
-        clearCardsSection()
-        //just bloody nothing works
-        renderCards() 
+      .then(() => {
+        renderCards();
       });
   } catch (err) {
     console.log(err);
@@ -139,8 +137,9 @@ function handleUnlike(id) {
         if (!res.ok) return Promise.reject("Ошибка");
         return res.json();
       })
-      .then(() => { clearCardsSection() })
-      .then(() => { renderCards() });
+      .then(() => {
+        renderCards();
+      });
   } catch (err) {
     console.log(err);
   }

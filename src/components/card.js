@@ -13,6 +13,7 @@ import {
   handleLike,
   handleUnlike,
 } from "../api/api";
+import clearCardsSection from "./utils";
 
 export function createCard(card, id) {
   const cardElement = templateElement?.content
@@ -58,6 +59,7 @@ export function createCard(card, id) {
 }
 
 export default function renderCards() {
+  clearCardsSection()
   handleGetUserData().then((data) => {
     handleGetPosts().then((posts) => {
       posts.forEach((post) => {
