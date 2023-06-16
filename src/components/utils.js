@@ -6,3 +6,11 @@ export default function clearCardsSection() {
         cardsSection.removeChild(el);
     });
 }
+
+export function showLoadingText(element) {
+    element.textContent = 'Сохраняется...'
+}
+
+export function hideLoadingText(element) {
+    element.textContent = 'Cохранить'
+}

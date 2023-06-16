@@ -1,5 +1,4 @@
 import renderCards from "../components/card";
-import clearCardsSection from "../components/utils";
 
 const config = {
   base_url: `https://mesto.nomoreparties.co/v1/plus-cohort-25`,
@@ -46,10 +45,11 @@ function handleChangeUserData(name, about) {
         name,
         about,
       }),
-    }).then((res) => {
-      if (!res.ok) return Promise.reject("Ошибка");
-      return res.json();
-    });
+    })
+      .then((res) => {
+        if (!res.ok) return Promise.reject("Ошибка");
+        return res.json();
+      })
   } catch (err) {
     console.log(err);
   }
