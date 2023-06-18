@@ -79,9 +79,9 @@ formAddCard.addEventListener("submit", (e) => {
     .catch((err) => console.log(err))
     .finally(() => {
       hideLoadingText(loadingButton);
-      toggleButtonState(selectors, inputList, buttonElement);
       closePopup(addCardPopup);
       formAddCard.reset();
+      toggleButtonState(selectors, inputList, buttonElement);
     });
 });
 

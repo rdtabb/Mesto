@@ -6,28 +6,46 @@ import {
   popupCover,
   imagePopup,
 } from "../pages";
-import {
-  handleGetPosts,
-  handleGetUserData,
-  handleDeleteCard,
-  handleLike,
-  handleUnlike,
-} from "../api/api";
+import { handleDeleteCard, handleLike, handleUnlike } from "../api/api";
 
-function addLikeListeners(liked, likeButton, id) {
+function checkIfLiked(card, id) {
+  return card.likes.some((like) => like._id == id);
+}
+
+function handleUpdateUIonLike(id, likeButton, number) {
+  handleLike(id)
+    .then((res) => {
+      number.textContent = res.likes.length;
+      likeButton.classList.add("card__like_true");
+      likeButton.addEventListener("click", () => {
+        handleUpdateUIonUnlike(id, likeButton, number);
+      });
+    })
+    .catch((err) => console.log(err));
+}
+
+function handleUpdateUIonUnlike(id, likeButton, number) {
+  handleUnlike(id)
+    .then((res) => {
+      number.textContent = res.likes.length;
+      likeButton.classList.remove("card__like_true");
+      likeButton.addEventListener("click", () => {
+        handleUpdateUIonLike(id, likeButton, number);
+      });
+    })
+    .catch((err) => console.log(err));
+}
+
+function addLikeHandler(liked, likeButton, id, number) {
   if (liked) {
     likeButton.classList.add("card__like_true");
     likeButton.addEventListener("click", () => {
-      handleUnlike(id)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err))
+      handleUpdateUIonUnlike(id, likeButton, number);
     });
   } else {
     likeButton.classList.remove("card__like_true");
     likeButton.addEventListener("click", () => {
-      handleLike(id)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err))
+      handleUpdateUIonLike(id, likeButton, number);
     });
   }
 }
@@ -36,20 +54,26 @@ export function createCard(card, id) {
   const cardElement = templateElement?.content
     .querySelector(".card")
     ?.cloneNode(true);
-  const cardImage = cardElement.querySelector(".card__image")
+  const cardImage = cardElement.querySelector(".card__image");
+  const cardLikesNumber = cardElement.querySelector(".card__number");
   cardImage.src = card.link;
   cardImage.alt = card.name;
   cardElement.querySelector(".card__description").textContent = card.name;
-  cardElement.querySelector(".card__number").textContent = card.likes.length;
+  cardLikesNumber.textContent = card.likes.length;
 
-  const liked = card.likes.some((like) => like._id == id);
-  const likeButton = cardElement.querySelector(".card__like")
-  addLikeListeners(liked, likeButton, card._id)
+  const liked = checkIfLiked(card, id);
+  const likeButton = cardElement.querySelector(".card__like");
+  addLikeHandler(liked, likeButton, card._id, cardLikesNumber);
 
-  const deleteButton = cardElement.querySelector('.card__delete')
+  const deleteButton = cardElement.querySelector(".card__delete");
   if (card.owner._id == id) {
     deleteButton.addEventListener("click", () => {
-      handleDeleteCard(card._id);
+      handleDeleteCard(card._id)
+        .catch((err) => console.log(err))
+        .finally(() => {
+          const card = deleteButton.closest(".card");
+          card.remove();
+        });
     });
   } else {
     deleteButton.remove();
@@ -73,8 +97,6 @@ export function addCard(card, id) {
 
 export default function renderCards(posts, id) {
   posts.forEach((post) => {
-    addCard(post, id)
-  })
+    addCard(post, id);
+  });
 }
-
-

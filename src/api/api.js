@@ -5,15 +5,15 @@ const config = {
     "Content-Type": "application/json",
   },
 };
-
 function checkResponse(res) {
   if (!res.ok) return Promise.reject("Ошибка");
   return res.json();
 }
-
 function request(url, options) {
   return fetch(url, options).then(checkResponse);
 }
+
+// ----------------------------------------------------------------------------------------------------
 
 function handleGetPosts() {
   return request(`${config.base_url}/cards`, {
