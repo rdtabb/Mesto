@@ -1,10 +1,7 @@
 import "./index.css";
-import {
-  selectors,
-  enableValidation,
-  toggleButtonState,
-} from "../components/validate";
+import { selectors, enableValidation, toggleButtonState } from "../components/validate";
 import renderCards from "../components/card";
+import { addCard, createCard } from "../components/card";
 import { closePopup, openPopup } from "../components/modal";
 import { showLoadingText, hideLoadingText } from "../components/utils";
 import {
@@ -12,6 +9,7 @@ import {
   handleGetUserData,
   handleChangeUserAvatar,
   handleAddCard,
+  handleGetPosts,
 } from "../api/api";
 // ------------------------------------------------------------------------------------------------------------
 export const templateElement = document.querySelector("#card-template");
@@ -41,40 +39,50 @@ export const profilePopup = document.querySelector(".popup_profile");
 export const addCardPopup = document.querySelector(".popup_addcard");
 export const imagePopup = document.querySelector(".popup_image");
 const avatarPopup = document.querySelector(".popup_avatar");
-export const buttonsClose = Array.from(
+export const closeButtons = Array.from(
   document.querySelectorAll(".popup__close")
 );
 // ------------------------------------------------------------------------------------------------------------
-renderCards();
-handleGetUserData().then((data) => {
-  profileDescription.textContent = data.about;
-  profileHeader.textContent = data.name;
-  profileAvatar.src = data.avatar;
-});
+function setUserData(about, name, avatar) {
+  profileDescription.textContent = about;
+  profileHeader.textContent = name;
+  profileAvatar.src = avatar;
+}
+
+Promise.all([handleGetPosts(), handleGetUserData()])
+  .then(([postsData, userData]) => {
+    setUserData(userData.about, userData.name, userData.avatar);
+    renderCards(postsData, userData._id);
+  })
+  .catch((err) => console.log(err));
 
 // ------------------------------------------------------------------------------------------------------------
 formAddCard.addEventListener("submit", (e) => {
   e.preventDefault();
-  const addPopup = formAddCard.closest(".popup");
-  const card = {
-    link: inputUrl.value,
-    name: inputPlace.value,
-  };
-  const loadingButton = formAddCard.querySelector(".popup__submit");
-  showLoadingText(loadingButton);
-  handleAddCard(card).then(() => {
-    closePopup(addPopup);
-    hideLoadingText(loadingButton);
-  });
-  formAddCard.reset();
-
   const inputList = Array.from(
     formAddCard.querySelectorAll(`${selectors.inputSelector}`)
   );
   const buttonElement = formAddCard.querySelector(
     `${selectors.submitButtonSelector}`
   );
-  toggleButtonState(selectors, inputList, buttonElement);
+  const card = {
+    link: inputUrl.value,
+    name: inputPlace.value,
+  };
+  const loadingButton = formAddCard.querySelector(".popup__submit");
+  showLoadingText(loadingButton);
+  handleAddCard(card)
+    .then((res) => {
+      const card = createCard(res, res.owner._id)
+      cardsSection.prepend(card)
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      hideLoadingText(loadingButton);
+      toggleButtonState(selectors, inputList, buttonElement);
+      closePopup(addCardPopup);
+      formAddCard.reset();
+    });
 });
 
 formEditProfile.addEventListener("submit", (e) => {
@@ -82,19 +90,14 @@ formEditProfile.addEventListener("submit", (e) => {
   const loadingButton = formEditProfile.querySelector(".popup__submit");
   showLoadingText(loadingButton);
   handleChangeUserData(inputName.value, inputStatus.value)
-    .then(() => {
-      handleGetUserData().then((data) => {
-        profileDescription.textContent = data.about;
-        profileHeader.textContent = data.name;
-        profileAvatar.src = data.avatar;
-      });
+    .then((res) => {
+      setUserData(res.about, res.name, res.avatar);
     })
-    .then(() => {
+    .catch((err) => console.log(err))
+    .finally(() => {
       hideLoadingText(loadingButton);
-      const editPopup = formEditProfile.closest(".popup");
-      closePopup(editPopup);
+      closePopup(profilePopup);
     });
-  formEditProfile.querySelector(".popup__submit").textContent = "Сохранить";
 });
 
 formEditAvatar.addEventListener("submit", (e) => {
@@ -102,18 +105,15 @@ formEditAvatar.addEventListener("submit", (e) => {
   const loadingButton = formEditAvatar.querySelector(".popup__submit");
   showLoadingText(loadingButton);
   handleChangeUserAvatar(inputAvatar.value)
-    .then(() => {
-      handleGetUserData().then((data) => {
-        profileDescription.textContent = data.about;
-        profileHeader.textContent = data.name;
-        profileAvatar.src = data.avatar;
-      });
+    .then((res) => {
+      setUserData(res.about, res.name, res.avatar);
     })
-    .then(() => {
+    .catch((err) => console.log(err))
+    .finally(() => {
       hideLoadingText(loadingButton);
       closePopup(avatarPopup);
+      inputAvatar.value = "";
     });
-  inputAvatar.value = "";
 });
 
 profileAvatar.addEventListener("click", () => {
@@ -130,7 +130,7 @@ buttonAddCard.addEventListener("click", () => {
   openPopup(addCardPopup);
 });
 
-buttonsClose.forEach((button) => {
+closeButtons.forEach((button) => {
   const buttonsPopup = button.closest(".popup");
   button.addEventListener("click", () => closePopup(buttonsPopup));
 });

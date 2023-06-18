@@ -1,6 +1,4 @@
-import { createCard } from "./card";
 import {
-  cardsSection,
   profileHeader,
   profileDescription,
   inputName,
@@ -17,22 +15,18 @@ function closePopup(popupElement) {
   popupElement.removeEventListener("click", closePopupOnOverlay);
 }
 function closePopupEsc(e) {
-  const popup = document.querySelector(".popup_opened");
   if (e.key == "Escape") {
+    const popup = document.querySelector(".popup_opened");
     closePopup(popup);
   }
 }
 function closePopupOnOverlay(e) {
-  const popup = document.querySelector(".popup_opened");
-  if (e.target != popup) return;
-  closePopup(popup);
-}
-function addCard(card) {
-  const cardEl = createCard(card);
-  cardsSection.prepend(cardEl);
+  if (e.target === e.currentTarget) {
+    closePopup(e.currentTarget)
+  }
 }
 function editProfile() {
   profileHeader.textContent = inputName.value;
   profileDescription.textContent = inputStatus.value;
 }
-export { openPopup, closePopup, addCard, editProfile };
+export { openPopup, closePopup, editProfile };
