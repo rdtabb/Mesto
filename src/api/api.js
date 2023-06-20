@@ -1,3 +1,5 @@
+import { request } from "../components/utils";
+
 const config = {
   base_url: `https://mesto.nomoreparties.co/v1/plus-cohort-25`,
   headers: {
@@ -5,13 +7,6 @@ const config = {
     "Content-Type": "application/json",
   },
 };
-function checkResponse(res) {
-  if (!res.ok) return Promise.reject("Ошибка");
-  return res.json();
-}
-function request(url, options) {
-  return fetch(url, options).then(checkResponse);
-}
 
 // ----------------------------------------------------------------------------------------------------
 
