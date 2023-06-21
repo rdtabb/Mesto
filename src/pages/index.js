@@ -1,9 +1,17 @@
 import "./index.css";
-import { selectors, enableValidation, toggleButtonState } from "../components/validate";
+import {
+  selectors,
+  enableValidation,
+  toggleButtonState,
+} from "../components/validate";
 import renderCards from "../components/card";
 import { createCard } from "../components/card";
 import { closePopup, openPopup } from "../components/modal";
-import { showLoadingText, hideLoadingText, setUserData } from "../components/utils";
+import {
+  showLoadingText,
+  hideLoadingText,
+  setUserData,
+} from "../components/utils";
 import {
   handleChangeUserData,
   handleGetUserData,
@@ -22,11 +30,13 @@ export const profileAvatar = document.querySelector(".profile__avatar");
 export const popupCover = document.querySelector(".popup__cover");
 export const popupCaption = document.querySelector(".popup__caption");
 export const formEditProfile = document.querySelector(".popup__form_profile");
-const formEditProfileLoadingButton = formEditProfile.querySelector(".popup__submit");
+const formEditProfileLoadingButton =
+  formEditProfile.querySelector(".popup__submit");
 export const formAddCard = document.querySelector(".popup__form_addcard");
 const formAddLoadingButton = formAddCard.querySelector(".popup__submit");
 export const formEditAvatar = document.querySelector(".popup__form_avatar");
-const formEditAvatarLoadingButton = formEditAvatar.querySelector(".popup__submit");
+const formEditAvatarLoadingButton =
+  formEditAvatar.querySelector(".popup__submit");
 export const inputUrl = document.querySelector(".popup__input_type_url");
 export const inputPlace = document.querySelector(".popup__input_type_place");
 export const inputName = document.querySelector(".popup__input_type_name");
@@ -56,8 +66,12 @@ Promise.all([handleGetPosts(), handleGetUserData()])
 // ------------------------------------------------------------------------------------------------------------
 formAddCard.addEventListener("submit", (e) => {
   e.preventDefault();
-  const inputList = Array.from(formAddCard.querySelectorAll(`${selectors.inputSelector}`));
-  const buttonElement = formAddCard.querySelector(`${selectors.submitButtonSelector}`);
+  const inputList = Array.from(
+    formAddCard.querySelectorAll(`${selectors.inputSelector}`)
+  );
+  const buttonElement = formAddCard.querySelector(
+    `${selectors.submitButtonSelector}`
+  );
   const card = {
     link: inputUrl.value,
     name: inputPlace.value,
@@ -65,16 +79,18 @@ formAddCard.addEventListener("submit", (e) => {
   showLoadingText(formAddLoadingButton);
   handleAddCard(card)
     .then((res) => {
-      const card = createCard(res, res.owner._id)
-      cardsSection.prepend(card)
+      const card = createCard(res, res.owner._id);
+      cardsSection.prepend(card);
     })
-    .catch((err) => console.log(err))
     .then(() => {
       formAddCard.reset();
       closePopup(addCardPopup);
-      hideLoadingText(formAddLoadingButton);
       toggleButtonState(selectors, inputList, buttonElement);
     })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      hideLoadingText(formAddLoadingButton);
+    });
 });
 
 formEditProfile.addEventListener("submit", (e) => {
@@ -84,11 +100,13 @@ formEditProfile.addEventListener("submit", (e) => {
     .then((res) => {
       setUserData(res.about, res.name, res.avatar);
     })
-    .catch((err) => console.log(err))
     .then(() => {
       closePopup(profilePopup);
-      hideLoadingText(formEditProfileLoadingButton);
     })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      hideLoadingText(formEditProfileLoadingButton);
+    });
 });
 
 formEditAvatar.addEventListener("submit", (e) => {
@@ -98,11 +116,14 @@ formEditAvatar.addEventListener("submit", (e) => {
     .then((res) => {
       setUserData(res.about, res.name, res.avatar);
     })
-    .catch((err) => console.log(err))
     .then(() => {
-      hideLoadingText(formEditAvatarLoadingButton);
       closePopup(avatarPopup);
       formEditAvatar.reset();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      hideLoadingText(formEditAvatarLoadingButton);
+
     })
 });
 

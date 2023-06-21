@@ -17,8 +17,9 @@ function handleUpdateUIonLike(id, likeButton, number) {
     .then((res) => {
       number.textContent = res.likes.length;
       likeButton.classList.add("card__like_true");
-      likeButton.addEventListener("click", () => {
+      likeButton.addEventListener("click", function unlikeEventHandler() {
         handleUpdateUIonUnlike(id, likeButton, number);
+        this.removeEventListener("click", unlikeEventHandler);
       });
     })
     .catch((err) => console.log(err));
@@ -29,8 +30,9 @@ function handleUpdateUIonUnlike(id, likeButton, number) {
     .then((res) => {
       number.textContent = res.likes.length;
       likeButton.classList.remove("card__like_true");
-      likeButton.addEventListener("click", () => {
+      likeButton.addEventListener("click", function likeEventHandler() {
         handleUpdateUIonLike(id, likeButton, number);
+        this.removeEventListener("click", likeEventHandler);
       });
     })
     .catch((err) => console.log(err));
@@ -39,13 +41,15 @@ function handleUpdateUIonUnlike(id, likeButton, number) {
 function addLikeHandler(liked, likeButton, id, number) {
   if (liked) {
     likeButton.classList.add("card__like_true");
-    likeButton.addEventListener("click", () => {
+    likeButton.addEventListener("click", function unlikeEventHandler() {
       handleUpdateUIonUnlike(id, likeButton, number);
+      this.removeEventListener("click", unlikeEventHandler);
     });
   } else {
     likeButton.classList.remove("card__like_true");
-    likeButton.addEventListener("click", () => {
+    likeButton.addEventListener("click", function likeEventHandler() {
       handleUpdateUIonLike(id, likeButton, number);
+      this.removeEventListener("click", likeEventHandler);
     });
   }
 }
@@ -69,11 +73,11 @@ export function createCard(card, id) {
   if (card.owner._id == id) {
     deleteButton.addEventListener("click", () => {
       handleDeleteCard(card._id)
-        .catch((err) => console.log(err))
-        .finally(() => {
+        .then(() => {
           const card = deleteButton.closest(".card");
           card.remove();
-        });
+        })
+        .catch((err) => console.log(err));
     });
   } else {
     deleteButton.remove();
