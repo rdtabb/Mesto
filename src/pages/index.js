@@ -19,6 +19,7 @@ import {
   handleAddCard,
   handleGetPosts,
 } from "../api/api";
+import FormValidate from "../components/validate";
 // ------------------------------------------------------------------------------------------------------------
 export const templateElement = document.querySelector("#card-template");
 export const cardsSection = document.querySelector(".cards");
@@ -123,7 +124,7 @@ formEditAvatar.addEventListener("submit", (e) => {
     .catch((err) => console.log(err))
     .finally(() => {
       hideLoadingText(formEditAvatarLoadingButton);
-    })
+    });
 });
 
 profileAvatar.addEventListener("click", () => {
@@ -145,4 +146,7 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(buttonsPopup));
 });
 // ------------------------------------------------------------------------------------------------------------
-enableValidation(selectors);
+// enableValidation(selectors);
+//
+const validator = new FormValidate(selectors);
+validator.enableValidation();
