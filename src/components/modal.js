@@ -1,9 +1,3 @@
-import {
-  profileHeader,
-  profileDescription,
-  inputName,
-  inputStatus,
-} from "../pages";
 function openPopup(popupElement) {
   popupElement.classList.add("popup_opened");
   document.addEventListener("keydown", closePopupEsc);
@@ -25,8 +19,4 @@ function closePopupOnOverlay(e) {
     closePopup(e.currentTarget)
   }
 }
-function editProfile() {
-  profileHeader.textContent = inputName.value;
-  profileDescription.textContent = inputStatus.value;
-}
-export { openPopup, closePopup, editProfile };
+export { openPopup, closePopup };

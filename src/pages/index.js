@@ -123,7 +123,6 @@ formEditAvatar.addEventListener("submit", (e) => {
     .catch((err) => console.log(err))
     .finally(() => {
       hideLoadingText(formEditAvatarLoadingButton);
-
     })
 });
 
