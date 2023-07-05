@@ -1,9 +1,5 @@
 import "./index.css";
-import {
-  selectors,
-  enableValidation,
-  toggleButtonState,
-} from "../components/validate";
+import { selectors, toggleButtonState } from "../components/validate";
 import renderCards from "../components/card";
 import { createCard } from "../components/card";
 import { closePopup, openPopup } from "../components/modal";
@@ -146,7 +142,5 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(buttonsPopup));
 });
 // ------------------------------------------------------------------------------------------------------------
-// enableValidation(selectors);
-//
 const validator = new FormValidate(selectors);
 validator.enableValidation();

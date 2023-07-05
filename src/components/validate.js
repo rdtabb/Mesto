@@ -184,6 +184,3 @@ export default class FormValidate {
     });
   }
 }
-// Валидация включается как-то так
-// const validation = new FormValidate(selectors)
-// validation.enableValidation()

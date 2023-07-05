@@ -22,18 +22,3 @@ function checkResponse(res) {
 export function request(url, options) {
   return fetch(url, options).then(checkResponse);
 }
-
-class UserInfo {
-  constructor(selector, selector2) {
-    this.username = username;
-    this.status = status;
-    this.avatar = avatar;
-  }
-
-  getUserInfo() {
-    profileDescription.textContent = this.status;
-    profileHeader.textContent = this.username;
-    profileAvatar.src = this.avatar;
-  }
-}
-
