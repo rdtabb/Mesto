@@ -133,7 +133,7 @@ export default class FormValidate {
       buttonElement.setAttribute("disabled", "true");
     } else {
       buttonElement.classList.remove(this._inactiveButtonClass);
-      buttonElement.setAttribute("disabled", "false");
+      buttonElement.removeAttribute("disabled");
     }
   }
 

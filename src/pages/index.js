@@ -1,6 +1,6 @@
 import "./index.css";
 import { selectors, toggleButtonState } from "../components/validate";
-import {PopupWithForm} from "../components/Popup.js";
+import {PopupWithForm} from "../components/PopupWithForm.js";
 import renderCards from "../components/card";
 import { createCard } from "../components/card";
 import {
@@ -49,9 +49,7 @@ export const profilePopup = document.querySelector(".popup_profile");
 export const addCardPopup = document.querySelector(".popup_addcard");
 export const imagePopup = document.querySelector(".popup_image");
 const avatarPopup = document.querySelector(".popup_avatar");
-export const closeButtons = Array.from(
-  document.querySelectorAll(".popup__close")
-);
+
 // ------------------------------------------------------------------------------------------------------------
 Promise.all([handleGetPosts(), handleGetUserData()])
   .then(([postsData, userData]) => {
@@ -62,7 +60,6 @@ Promise.all([handleGetPosts(), handleGetUserData()])
 
 // ------------------------------------------------------------------------------------------------------------
 //todo disable submit button onload
-
 
 profileAvatar.addEventListener("click", () => {
     const popup = new PopupWithForm(avatarPopup, (e) => {
@@ -88,10 +85,10 @@ profileAvatar.addEventListener("click", () => {
 buttonEditProfile.addEventListener("click", () => {
     inputName.value = profileHeader.textContent;
     inputStatus.value = profileDescription.textContent;
-
     const popup = new PopupWithForm(profilePopup, (e) => {
         e.preventDefault();
         showLoadingText(formEditProfileLoadingButton);
+
         handleChangeUserData(inputName.value, inputStatus.value)
             .then((res) => {
                 setUserData(res.about, res.name, res.avatar);
@@ -104,6 +101,7 @@ buttonEditProfile.addEventListener("click", () => {
                 hideLoadingText(formEditProfileLoadingButton);
             });
     });
+
     popup.open();
 });
 
@@ -121,7 +119,9 @@ buttonAddCard.addEventListener("click", () => {
             link: inputUrl.value,
             name: inputPlace.value,
         };
+
         showLoadingText(formAddLoadingButton);
+
         handleAddCard(card)
             .then((res) => {
                 const card = createCard(res, res.owner._id);

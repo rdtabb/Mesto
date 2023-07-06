@@ -1,12 +1,10 @@
 import {
   templateElement,
   cardsSection,
-  popupCaption,
-  popupCover,
   imagePopup,
 } from "../pages";
 import { handleDeleteCard, handleLike, handleUnlike } from "../api/api";
-import {PopupWithImage} from "./Popup";
+import {PopupWithImage} from "./PopupWithImage.js";
 
 function checkIfLiked(card, id) {
   return card.likes.some((like) => like._id == id);
@@ -70,7 +68,7 @@ export function createCard(card, id) {
   addLikeHandler(liked, likeButton, card._id, cardLikesNumber);
 
   const deleteButton = cardElement.querySelector(".card__delete");
-  if (card.owner._id == id) {
+  if (card.owner._id === id) {
     deleteButton.addEventListener("click", () => {
       handleDeleteCard(card._id)
         .then(() => {
