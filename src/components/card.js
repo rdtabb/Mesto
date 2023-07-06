@@ -1,4 +1,3 @@
-import { openPopup } from "./modal";
 import {
   templateElement,
   cardsSection,
@@ -7,6 +6,7 @@ import {
   imagePopup,
 } from "../pages";
 import { handleDeleteCard, handleLike, handleUnlike } from "../api/api";
+import {PopupWithImage} from "./Popup";
 
 function checkIfLiked(card, id) {
   return card.likes.some((like) => like._id == id);
@@ -86,10 +86,9 @@ export function createCard(card, id) {
   cardImage.addEventListener("click", (e) => {
     const link = e.target.getAttribute("src");
     const alt = e.target.getAttribute("alt");
-    popupCaption.textContent = card.name;
-    popupCover.src = link;
-    popupCover.alt = alt;
-    openPopup(imagePopup);
+
+    const popup = new PopupWithImage(imagePopup, {name: card.name, alt, link});
+    popup.open();
   });
   return cardElement;
 }

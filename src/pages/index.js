@@ -1,4 +1,5 @@
 import "./index.css";
+import {PopupWithForm} from "../components/Popup.js";
 import {
   selectors,
   enableValidation,
@@ -6,7 +7,6 @@ import {
 } from "../components/validate";
 import renderCards from "../components/card";
 import { createCard } from "../components/card";
-import { closePopup, openPopup } from "../components/modal";
 import {
   showLoadingText,
   hideLoadingText,
@@ -64,86 +64,84 @@ Promise.all([handleGetPosts(), handleGetUserData()])
   .catch((err) => console.log(err));
 
 // ------------------------------------------------------------------------------------------------------------
-formAddCard.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const inputList = Array.from(
-    formAddCard.querySelectorAll(`${selectors.inputSelector}`)
-  );
-  const buttonElement = formAddCard.querySelector(
-    `${selectors.submitButtonSelector}`
-  );
-  const card = {
-    link: inputUrl.value,
-    name: inputPlace.value,
-  };
-  showLoadingText(formAddLoadingButton);
-  handleAddCard(card)
-    .then((res) => {
-      const card = createCard(res, res.owner._id);
-      cardsSection.prepend(card);
-    })
-    .then(() => {
-      formAddCard.reset();
-      closePopup(addCardPopup);
-      toggleButtonState(selectors, inputList, buttonElement);
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      hideLoadingText(formAddLoadingButton);
-    });
-});
+//todo disable submit button onload
 
-formEditProfile.addEventListener("submit", (e) => {
-  e.preventDefault();
-  showLoadingText(formEditProfileLoadingButton);
-  handleChangeUserData(inputName.value, inputStatus.value)
-    .then((res) => {
-      setUserData(res.about, res.name, res.avatar);
-    })
-    .then(() => {
-      closePopup(profilePopup);
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      hideLoadingText(formEditProfileLoadingButton);
-    });
-});
-
-formEditAvatar.addEventListener("submit", (e) => {
-  e.preventDefault();
-  showLoadingText(formEditAvatarLoadingButton);
-  handleChangeUserAvatar(inputAvatar.value)
-    .then((res) => {
-      setUserData(res.about, res.name, res.avatar);
-    })
-    .then(() => {
-      closePopup(avatarPopup);
-      formEditAvatar.reset();
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      hideLoadingText(formEditAvatarLoadingButton);
-
-    })
-});
 
 profileAvatar.addEventListener("click", () => {
-  openPopup(avatarPopup);
+    const popup = new PopupWithForm(avatarPopup, (e) => {
+        e.preventDefault();
+        showLoadingText(formEditAvatarLoadingButton);
+
+        handleChangeUserAvatar(inputAvatar.value)
+            .then((res) => {
+                setUserData(res.about, res.name, res.avatar);
+            })
+            .then(() => {
+                popup.close();
+                formEditAvatar.reset();
+            })
+            .catch((err) => console.log(err))
+            .finally(() => {
+                hideLoadingText(formEditAvatarLoadingButton);
+            });
+    });
+    popup.open();
 });
 
 buttonEditProfile.addEventListener("click", () => {
-  inputName.value = profileHeader.textContent;
-  inputStatus.value = profileDescription.textContent;
-  openPopup(profilePopup);
+    inputName.value = profileHeader.textContent;
+    inputStatus.value = profileDescription.textContent;
+
+    const popup = new PopupWithForm(profilePopup, (e) => {
+        e.preventDefault();
+        showLoadingText(formEditProfileLoadingButton);
+        handleChangeUserData(inputName.value, inputStatus.value)
+            .then((res) => {
+                setUserData(res.about, res.name, res.avatar);
+            })
+            .then(() => {
+                popup.close();
+            })
+            .catch((err) => console.log(err))
+            .finally(() => {
+                hideLoadingText(formEditProfileLoadingButton);
+            });
+    });
+    popup.open();
 });
 
 buttonAddCard.addEventListener("click", () => {
-  openPopup(addCardPopup);
+    const popup = new PopupWithForm(addCardPopup, (e) => {
+        e.preventDefault();
+
+        const inputList = Array.from(
+            formAddCard.querySelectorAll(`${selectors.inputSelector}`)
+        );
+        const buttonElement = formAddCard.querySelector(
+            `${selectors.submitButtonSelector}`
+        );
+        const card = {
+            link: inputUrl.value,
+            name: inputPlace.value,
+        };
+        showLoadingText(formAddLoadingButton);
+        handleAddCard(card)
+            .then((res) => {
+                const card = createCard(res, res.owner._id);
+                cardsSection.prepend(card);
+            })
+            .then(() => {
+                formAddCard.reset();
+                toggleButtonState(selectors, inputList, buttonElement);
+                popup.close();
+            })
+            .catch((err) => console.log(err))
+            .finally(() => {
+                hideLoadingText(formAddLoadingButton);
+            });
+    });
+    popup.open();
 });
 
-closeButtons.forEach((button) => {
-  const buttonsPopup = button.closest(".popup");
-  button.addEventListener("click", () => closePopup(buttonsPopup));
-});
 // ------------------------------------------------------------------------------------------------------------
 enableValidation(selectors);
