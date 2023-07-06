@@ -1,4 +1,5 @@
 import "./index.css";
+import { selectors, toggleButtonState } from "../components/validate";
 import {PopupWithForm} from "../components/Popup.js";
 import {
   selectors,
@@ -19,6 +20,7 @@ import {
   handleAddCard,
   handleGetPosts,
 } from "../api/api";
+import FormValidate from "../components/validate";
 // ------------------------------------------------------------------------------------------------------------
 export const templateElement = document.querySelector("#card-template");
 export const cardsSection = document.querySelector(".cards");
@@ -144,4 +146,5 @@ buttonAddCard.addEventListener("click", () => {
 });
 
 // ------------------------------------------------------------------------------------------------------------
-enableValidation(selectors);
+const validator = new FormValidate(selectors);
+validator.enableValidation();

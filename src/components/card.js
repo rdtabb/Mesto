@@ -103,3 +103,50 @@ export default function renderCards(posts, id) {
     addCard(post, id);
   });
 }
+class Card {
+  constructor(selector, card, openImagePopup, likeCard, deleteCard) {
+    this._selector = selector;
+    this._name = card.name;
+    this._link = card.link;
+    this._cardlikes = card.likes;
+    this._owner = card.owner;
+    this.openImagePopup = openImagePopup;
+    this.likeCard = likeCard;
+    this.deleteCard = deleteCard;
+  }
+
+  _getElement() {
+    this._element = document
+      .querySelector(this._selector)
+      .content.querySelector(".card")
+      .cloneNode(true);
+
+    return this._element;
+  }
+
+  _setEventListeners() {
+    const cardImage = this._element.querySelector(".card__image");
+    const cardDeleteButton = this._element.querySelector(".card__delete");
+    const cardLikeButton = this._element.querySelector(".card__like");
+    const cardLikesNumber = this._element.querySelector(".card__number");
+    cardLikesNumber.textContent = this._cardlikes.length;
+    cardLikeButton.addEventListener("click", this.likeCard);
+    cardDeleteButton.addEventListener("click", this.deleteCard);
+    cardImage.addEventListener("click", this.openImagePopup);
+  }
+
+  generate() {
+    this._getElement();
+
+    const cardImage = this._element.querySelector(".card__image");
+    const cardLikesNumber = this._element.querySelector(".card__number");
+    cardImage.src = this._link;
+    cardImage.alt = this._name;
+    cardElement.querySelector(".card__description").textContent = this._name;
+    cardLikesNumber.textContent = this._cardlikes.length;
+
+    this._setEventListeners();
+
+    return cardElement;
+  }
+}
