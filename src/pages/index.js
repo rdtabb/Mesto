@@ -1,12 +1,32 @@
 import "./index.css";
-import { selectors, toggleButtonState } from "../components/validate";
 import {PopupWithForm} from "../components/PopupWithForm.js";
+import FormValidate from "../components/validate";
+import { selectors, toggleButtonState } from "../components/validate";
 import renderCards from "../components/card";
 import { createCard } from "../components/card";
 import {
-  showLoadingText,
-  hideLoadingText,
-  setUserData,
+    showLoadingText,
+    hideLoadingText,
+    setUserData,
+    profileAvatar,
+    avatarPopup,
+    formEditAvatarLoadingButton,
+    inputAvatar,
+    formAddLoadingButton,
+    formAddCard,
+    cardsSection,
+    inputPlace,
+    inputUrl,
+    addCardPopup,
+    buttonAddCard,
+    formEditProfileLoadingButton,
+    inputStatus,
+    inputName,
+    profilePopup,
+    profileDescription,
+    profileHeader,
+    buttonEditProfile,
+    formEditAvatar,
 } from "../components/utils";
 import {
   handleChangeUserData,
@@ -15,40 +35,7 @@ import {
   handleAddCard,
   handleGetPosts,
 } from "../api/api";
-import FormValidate from "../components/validate";
 // ------------------------------------------------------------------------------------------------------------
-export const templateElement = document.querySelector("#card-template");
-export const cardsSection = document.querySelector(".cards");
-export const profileHeader = document.querySelector(".profile__header");
-export const profileDescription = document.querySelector(
-  ".profile__description"
-);
-export const profileAvatar = document.querySelector(".profile__avatar");
-export const popupCover = document.querySelector(".popup__cover");
-export const popupCaption = document.querySelector(".popup__caption");
-export const formEditProfile = document.querySelector(".popup__form_profile");
-const formEditProfileLoadingButton =
-  formEditProfile.querySelector(".popup__submit");
-export const formAddCard = document.querySelector(".popup__form_addcard");
-const formAddLoadingButton = formAddCard.querySelector(".popup__submit");
-export const formEditAvatar = document.querySelector(".popup__form_avatar");
-const formEditAvatarLoadingButton =
-  formEditAvatar.querySelector(".popup__submit");
-export const inputUrl = document.querySelector(".popup__input_type_url");
-export const inputPlace = document.querySelector(".popup__input_type_place");
-export const inputName = document.querySelector(".popup__input_type_name");
-export const inputStatus = document.querySelector(
-  ".popup__input_type_description"
-);
-export const inputAvatar = document.querySelector(".popup__input_type_avatar");
-export const buttonEditProfile = document.querySelector(
-  ".profile__edit-button"
-);
-export const buttonAddCard = document.querySelector(".profile__add-button");
-export const profilePopup = document.querySelector(".popup_profile");
-export const addCardPopup = document.querySelector(".popup_addcard");
-export const imagePopup = document.querySelector(".popup_image");
-const avatarPopup = document.querySelector(".popup_avatar");
 
 // ------------------------------------------------------------------------------------------------------------
 Promise.all([handleGetPosts(), handleGetUserData()])
@@ -60,6 +47,7 @@ Promise.all([handleGetPosts(), handleGetUserData()])
 
 // ------------------------------------------------------------------------------------------------------------
 //todo disable submit button onload
+//todo бахнуть тень на мусорку
 
 profileAvatar.addEventListener("click", () => {
     const popup = new PopupWithForm(avatarPopup, (e) => {

@@ -1,8 +1,4 @@
-import {
-  templateElement,
-  cardsSection,
-  imagePopup,
-} from "../pages";
+import { templateElement, cardsSection, imagePopup } from "./utils";
 import { handleDeleteCard, handleLike, handleUnlike } from "../api/api";
 import {PopupWithImage} from "./PopupWithImage.js";
 
