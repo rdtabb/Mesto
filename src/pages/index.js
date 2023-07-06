@@ -1,11 +1,6 @@
 import "./index.css";
 import { selectors, toggleButtonState } from "../components/validate";
 import {PopupWithForm} from "../components/Popup.js";
-import {
-  selectors,
-  enableValidation,
-  toggleButtonState,
-} from "../components/validate";
 import renderCards from "../components/card";
 import { createCard } from "../components/card";
 import {

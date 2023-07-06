@@ -40,11 +40,11 @@ class PopupWithImage extends Popup{
     super(popup);
     const image = this._element.querySelector('.popup__cover');
     const caption = this._element.querySelector('.popup__caption');
+
     image.src = link;
     image.alt = alt;
     caption.textContent = name;
   }
-
 }
 
 export {PopupWithForm, PopupWithImage}
