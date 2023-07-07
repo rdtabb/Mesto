@@ -1,6 +1,6 @@
 import { templateElement, cardsSection, imagePopup } from "./utils";
 import { handleDeleteCard, handleLike, handleUnlike } from "../api/api";
-import {PopupWithImage} from "./PopupWithImage.js";
+import { PopupWithImage } from "./PopupWithImage.js";
 
 function checkIfLiked(card, id) {
   return card.likes.some((like) => like._id == id);
@@ -81,7 +81,11 @@ export function createCard(card, id) {
     const link = e.target.getAttribute("src");
     const alt = e.target.getAttribute("alt");
 
-    const popup = new PopupWithImage(imagePopup, {name: card.name, alt, link});
+    const popup = new PopupWithImage(imagePopup, {
+      name: card.name,
+      alt,
+      link,
+    });
     popup.open();
   });
   return cardElement;
@@ -97,8 +101,8 @@ export default function renderCards(posts, id) {
     addCard(post, id);
   });
 }
-class Card {
-  constructor(selector, card, openImagePopup, likeCard, deleteCard) {
+export class Card {
+  constructor(selector, card, openImagePopup, likeCard) {
     this._selector = selector;
     this._name = card.name;
     this._link = card.link;
@@ -106,7 +110,6 @@ class Card {
     this._owner = card.owner;
     this.openImagePopup = openImagePopup;
     this.likeCard = likeCard;
-    this.deleteCard = deleteCard;
   }
 
   _getElement() {
@@ -119,14 +122,12 @@ class Card {
   }
 
   _setEventListeners() {
-    const cardImage = this._element.querySelector(".card__image");
-    const cardDeleteButton = this._element.querySelector(".card__delete");
-    const cardLikeButton = this._element.querySelector(".card__like");
-    const cardLikesNumber = this._element.querySelector(".card__number");
-    cardLikesNumber.textContent = this._cardlikes.length;
-    cardLikeButton.addEventListener("click", this.likeCard);
-    cardDeleteButton.addEventListener("click", this.deleteCard);
-    cardImage.addEventListener("click", this.openImagePopup);
+    this._element
+      .querySelector(".card__like")
+      .addEventListener("click", this.likeCard);
+    this._element
+      .queryselector(".card__image")
+      .addEventListener("click", this.openImagePopup);
   }
 
   generate() {
@@ -138,6 +139,8 @@ class Card {
     cardImage.alt = this._name;
     cardElement.querySelector(".card__description").textContent = this._name;
     cardLikesNumber.textContent = this._cardlikes.length;
+    this._element.querySelector(".card__number").textContent =
+      this._cardlikes.length;
 
     this._setEventListeners();
 
