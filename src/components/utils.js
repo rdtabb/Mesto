@@ -1,4 +1,5 @@
 import { Api, config } from "../api/Api.js";
+import {PopupWithImage} from "./PopupWithImage";
 
 export const templateElement = document.querySelector("#card-template");
 export const cardsSection = document.querySelector(".cards");
@@ -35,12 +36,11 @@ export const avatarPopup = document.querySelector(".popup_avatar");
 
 export const api = new Api(config);
 
-export const userinfoSelectors = {
-  name: ".profile__header",
-  avatar: ".profile__avatar",
-  status: ".profile__description",
-};
-
+export const additionalCardMethods = {
+  handleLikeCard: api.handleLike,
+  handleDeleteCard: api.handleDeleteCard,
+  _openImagePopup: PopupWithImage.prototype.open,
+}
 export function showLoadingText(element) {
   element.textContent = "Сохраняется...";
 }

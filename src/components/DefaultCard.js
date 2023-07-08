@@ -2,35 +2,12 @@ import Card from "./ParentCard";
 
 export class DefaultCard extends Card {
   constructor(selector, id, methods, cardObject) {
-    super(selector, id);
-    this._handleLikeCard = methods.handleLikeCard;
-    this._openImagePopup = methods.openImagePopup;
-    this._cardObject = cardObject;
-  }
-
-  _setEventListeners() {
-    this._element.querySelector(".card__like").addEventListener("click", () => {
-      this._handleLikeCard(this._id);
-    });
-    this._element
-      .querySelector(".card__image")
-      .addEventListener("click", this._openImagePopup);
+    super(selector, id, methods, cardObject);
   }
 
   generate() {
-    this._element = super._getElement();
-
-    const cardImage = this._element.querySelector(".card__image");
-    const cardLikesNumber = this._element.querySelector(".card__number");
-    const cardDescription = this._element.querySelector(".card__description");
-    cardImage.src = this._cardObject.link;
-    cardImage.alt = this._cardObject.name;
-    cardDescription.textContent = this._cardObject.name;
-    cardLikesNumber.textContent = this._cardObject.likes.length;
-
+    this._element = super.generate();
     this._element.querySelector(".card__delete").remove();
-
-    this._setEventListeners();
 
     return this._element;
   }

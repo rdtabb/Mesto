@@ -100,6 +100,6 @@ export function addCard(card, id) {
 
 export default function renderCards(posts, id) {
   posts.forEach((post) => {
-    addCard(post , id);
+    addCard(post, id);
   });
 }

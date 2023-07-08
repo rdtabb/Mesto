@@ -28,10 +28,12 @@ import {
   buttonEditProfile,
   formEditAvatar,
   api,
-  userinfoSelectors,
+  additionalCardMethods,
 } from "../components/utils";
 import Userinfo from "../components/Userinfo";
 import Section from "../components/Section";
+import UserCard from "../components/UserCard";
+import {DefaultCard} from "../components/DefaultCard";
 // ------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------
@@ -40,23 +42,32 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
     setUserData(userData.about, userData.name, userData.avatar);
     renderCards(postsData, userData._id);
 
-    const userinfoHandle = new Userinfo(userData, userinfoSelectors);
-    userinfoHandle.setUserInfo();
-
+    const user = new Userinfo(userData);
+    user.setUserInfo();
     const cardsSection = new Section(
       {
         data: postsData,
-        renderer: (item) => {},
+        renderer: (item) => {
+          const card = user.checkId(item.owner._id)
+              ? new UserCard('#card-template', item._id, additionalCardMethods, item)
+              : new DefaultCard('#card-template', item._id, additionalCardMethods, item)
+
+          const generatedCard = card.generate()
+
+          cardsSection.setItem(generatedCard);
+        },
       },
       ".cards"
     );
+
+    cardsSection.renderItems();
   })
   .catch((err) => console.log(err));
 
 // ------------------------------------------------------------------------------------------------------------
 //todo disable submit button onload
 //todo бахнуть тень на мусорку
-
+// rename Card class file
 profileAvatar.addEventListener("click", () => {
   const popup = new PopupWithForm(avatarPopup, (e) => {
     e.preventDefault();
