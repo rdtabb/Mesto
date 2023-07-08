@@ -6,7 +6,8 @@ function checkIfLiked(card, id) {
 }
 
 function handleUpdateUIonLike(id, likeButton, number) {
-  api.handleLike(id)
+  api
+    .handleLike(id)
     .then((res) => {
       number.textContent = res.likes.length;
       likeButton.classList.add("card__like_true");
@@ -19,7 +20,8 @@ function handleUpdateUIonLike(id, likeButton, number) {
 }
 
 function handleUpdateUIonUnlike(id, likeButton, number) {
-  api.handleUnlike(id)
+  api
+    .handleUnlike(id)
     .then((res) => {
       number.textContent = res.likes.length;
       likeButton.classList.remove("card__like_true");
@@ -65,7 +67,8 @@ export function createCard(card, id) {
   const deleteButton = cardElement.querySelector(".card__delete");
   if (card.owner._id === id) {
     deleteButton.addEventListener("click", () => {
-      api.handleDeleteCard(card._id)
+      api
+        .handleDeleteCard(card._id)
         .then(() => {
           const card = deleteButton.closest(".card");
           card.remove();
@@ -99,50 +102,4 @@ export default function renderCards(posts, id) {
   posts.forEach((post) => {
     addCard(post , id);
   });
-}
-export class Card {
-  constructor(selector, card, openImagePopup, likeCard) {
-    this._selector = selector;
-    this._name = card.name;
-    this._link = card.link;
-    this._cardlikes = card.likes;
-    this._owner = card.owner;
-    this.openImagePopup = openImagePopup;
-    this.likeCard = likeCard;
-  }
-
-  _getElement() {
-    this._element = document
-      .querySelector(this._selector)
-      .content.querySelector(".card")
-      .cloneNode(true);
-
-    return this._element;
-  }
-
-  _setEventListeners() {
-    this._element
-      .querySelector(".card__like")
-      .addEventListener("click", this.likeCard);
-    this._element
-      .querySelector(".card__image")
-      .addEventListener("click", this.openImagePopup);
-  }
-
-  generate() {
-    this._getElement();
-
-    const cardImage = this._element.querySelector(".card__image");
-    const cardLikesNumber = this._element.querySelector(".card__number");
-    cardImage.src = this._link;
-    cardImage.alt = this._name;
-    cardElement.querySelector(".card__description").textContent = this._name;
-    cardLikesNumber.textContent = this._cardlikes.length;
-    this._element.querySelector(".card__number").textContent =
-      this._cardlikes.length;
-
-    this._setEventListeners();
-
-    return cardElement;
-  }
 }
