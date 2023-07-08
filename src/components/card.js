@@ -1,13 +1,12 @@
-import { templateElement, cardsSection, imagePopup } from "./utils";
-import { handleDeleteCard, handleLike, handleUnlike } from "../api/api";
+import { templateElement, cardsSection, imagePopup, api } from "./utils";
 import {PopupWithImage} from "./PopupWithImage.js";
 
 function checkIfLiked(card, id) {
-  return card.likes.some((like) => like._id == id);
+  return card.likes.some((like) => like._id === id);
 }
 
 function handleUpdateUIonLike(id, likeButton, number) {
-  handleLike(id)
+  api.handleLike(id)
     .then((res) => {
       number.textContent = res.likes.length;
       likeButton.classList.add("card__like_true");
@@ -20,7 +19,7 @@ function handleUpdateUIonLike(id, likeButton, number) {
 }
 
 function handleUpdateUIonUnlike(id, likeButton, number) {
-  handleUnlike(id)
+  api.handleUnlike(id)
     .then((res) => {
       number.textContent = res.likes.length;
       likeButton.classList.remove("card__like_true");
@@ -66,7 +65,7 @@ export function createCard(card, id) {
   const deleteButton = cardElement.querySelector(".card__delete");
   if (card.owner._id === id) {
     deleteButton.addEventListener("click", () => {
-      handleDeleteCard(card._id)
+      api.handleDeleteCard(card._id)
         .then(() => {
           const card = deleteButton.closest(".card");
           card.remove();

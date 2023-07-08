@@ -1,3 +1,4 @@
+import {Api, config} from "../api/Api.js";
 
 export const templateElement = document.querySelector("#card-template");
 export const cardsSection = document.querySelector(".cards");
@@ -31,6 +32,8 @@ export const profilePopup = document.querySelector(".popup_profile");
 export const addCardPopup = document.querySelector(".popup_addcard");
 export const imagePopup = document.querySelector(".popup_image");
 export const avatarPopup = document.querySelector(".popup_avatar");
+
+export const api = new Api(config)
 
 export function showLoadingText(element) {
   element.textContent = "Сохраняется...";

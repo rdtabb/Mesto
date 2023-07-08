@@ -1,6 +1,6 @@
 import { request } from "../components/utils";
 
-const config = {
+export const config = {
   base_url: `https://mesto.nomoreparties.co/v1/plus-cohort-25`,
   headers: {
     authorization: "5ee88334-f64d-4a57-bbca-c763324e5fde",
@@ -86,7 +86,7 @@ export {
   handleUnlike,
 };
 
-export default class Api {
+export class Api {
   constructor({ base_url, headers }) {
     this._base_url = base_url;
     this._headers = headers;
@@ -167,7 +167,6 @@ export default class Api {
   }
 }
 
-// const ApiHandler = new Api(config)
 // ApiHandler.handleGetPosts().then((res) => render(res))
 
 // 1. Api

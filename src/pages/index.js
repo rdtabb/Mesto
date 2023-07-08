@@ -27,18 +27,12 @@ import {
     profileHeader,
     buttonEditProfile,
     formEditAvatar,
+    api,
 } from "../components/utils";
-import {
-  handleChangeUserData,
-  handleGetUserData,
-  handleChangeUserAvatar,
-  handleAddCard,
-  handleGetPosts,
-} from "../api/api";
 // ------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------
-Promise.all([handleGetPosts(), handleGetUserData()])
+Promise.all([api.handleGetPosts() , api.handleGetUserData()])
   .then(([postsData, userData]) => {
     setUserData(userData.about, userData.name, userData.avatar);
     renderCards(postsData, userData._id);
@@ -54,7 +48,7 @@ profileAvatar.addEventListener("click", () => {
         e.preventDefault();
         showLoadingText(formEditAvatarLoadingButton);
 
-        handleChangeUserAvatar(inputAvatar.value)
+        api.handleChangeUserAvatar(inputAvatar.value)
             .then((res) => {
                 setUserData(res.about, res.name, res.avatar);
             })
@@ -77,7 +71,7 @@ buttonEditProfile.addEventListener("click", () => {
         e.preventDefault();
         showLoadingText(formEditProfileLoadingButton);
 
-        handleChangeUserData(inputName.value, inputStatus.value)
+        api.handleChangeUserData(inputName.value, inputStatus.value)
             .then((res) => {
                 setUserData(res.about, res.name, res.avatar);
             })
@@ -110,7 +104,7 @@ buttonAddCard.addEventListener("click", () => {
 
         showLoadingText(formAddLoadingButton);
 
-        handleAddCard(card)
+        api.handleAddCard(card)
             .then((res) => {
                 const card = createCard(res, res.owner._id);
                 cardsSection.prepend(card);
