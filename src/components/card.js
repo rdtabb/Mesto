@@ -125,7 +125,7 @@ export class Card {
       .querySelector(".card__like")
       .addEventListener("click", this.likeCard);
     this._element
-      .queryselector(".card__image")
+      .querySelector(".card__image")
       .addEventListener("click", this.openImagePopup);
   }
 
