@@ -1,6 +1,3 @@
-import { Api, config } from "../api/Api.js";
-import {PopupWithImage} from "./PopupWithImage";
-
 export const templateElement = document.querySelector("#card-template");
 export const cardsSection = document.querySelector(".cards");
 export const profileHeader = document.querySelector(".profile__header");
@@ -34,13 +31,6 @@ export const addCardPopup = document.querySelector(".popup_addcard");
 export const imagePopup = document.querySelector(".popup_image");
 export const avatarPopup = document.querySelector(".popup_avatar");
 
-export const api = new Api(config);
-
-export const additionalCardMethods = {
-  handleLikeCard: api.handleLike,
-  handleDeleteCard: api.handleDeleteCard,
-  _openImagePopup: PopupWithImage.prototype.open,
-}
 export function showLoadingText(element) {
   element.textContent = "Сохраняется...";
 }

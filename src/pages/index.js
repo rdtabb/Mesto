@@ -2,15 +2,14 @@ import "./index.css";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import FormValidate from "../components/validate";
 import { selectors, toggleButtonState } from "../components/validate";
-import renderCards from "../components/card";
 import { createCard } from "../components/card";
 import {
   showLoadingText,
   hideLoadingText,
-  setUserData,
   profileAvatar,
   avatarPopup,
   formEditAvatarLoadingButton,
+  imagePopup,
   inputAvatar,
   formAddLoadingButton,
   formAddCard,
@@ -27,21 +26,25 @@ import {
   profileHeader,
   buttonEditProfile,
   formEditAvatar,
-  api,
-  additionalCardMethods,
 } from "../components/utils";
 import Userinfo from "../components/Userinfo";
 import Section from "../components/Section";
 import UserCard from "../components/UserCard";
-import {DefaultCard} from "../components/DefaultCard";
+import { DefaultCard } from "../components/DefaultCard";
+import { Api, config } from "../api/Api";
+import { PopupWithImage } from "../components/PopupWithImage";
 // ------------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------------
+export const api = new Api(config);
+const popupImage = new PopupWithImage(imagePopup);
+const cardMethods = {
+  handleLikeCard: api.handleLike.bind(api),
+  handleDeleteCard: api.handleDeleteCard.bind(api),
+  openImagePopup: popupImage.openImagePopup.bind(popupImage),
+};
 Promise.all([api.handleGetPosts(), api.handleGetUserData()])
   .then(([postsData, userData]) => {
-    setUserData(userData.about, userData.name, userData.avatar);
-    renderCards(postsData, userData._id);
-
     const user = new Userinfo(userData);
     user.setUserInfo();
     const cardsSection = new Section(
@@ -49,11 +52,14 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
         data: postsData,
         renderer: (item) => {
           const card = user.checkId(item.owner._id)
-              ? new UserCard('#card-template', item._id, additionalCardMethods, item)
-              : new DefaultCard('#card-template', item._id, additionalCardMethods, item)
-
-          const generatedCard = card.generate()
-
+            ? new UserCard("#card-template", cardMethods, item, userData._id)
+            : new DefaultCard(
+                "#card-template",
+                cardMethods,
+                item,
+                userData._id
+              );
+          const generatedCard = card.generate();
           cardsSection.setItem(generatedCard);
         },
       },
@@ -63,7 +69,6 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
     cardsSection.renderItems();
   })
   .catch((err) => console.log(err));
-
 // ------------------------------------------------------------------------------------------------------------
 //todo disable submit button onload
 //todo бахнуть тень на мусорку
@@ -76,7 +81,8 @@ profileAvatar.addEventListener("click", () => {
     api
       .handleChangeUserAvatar(inputAvatar.value)
       .then((res) => {
-        setUserData(res.about, res.name, res.avatar);
+        const user = new Userinfo(res);
+        user.setUserInfo();
       })
       .then(() => {
         popup.close();
@@ -100,7 +106,8 @@ buttonEditProfile.addEventListener("click", () => {
     api
       .handleChangeUserData(inputName.value, inputStatus.value)
       .then((res) => {
-        setUserData(res.about, res.name, res.avatar);
+        const user = new Userinfo(res);
+        user.setUserInfo();
       })
       .then(() => {
         popup.close();
@@ -134,8 +141,13 @@ buttonAddCard.addEventListener("click", () => {
     api
       .handleAddCard(card)
       .then((res) => {
-        const card = createCard(res, res.owner._id);
-        cardsSection.prepend(card);
+        const cardEl = new UserCard(
+          "#card-template",
+          res._id,
+          cardMethods,
+          res
+        );
+        cardsSection.prepend(cardEl);
       })
       .then(() => {
         formAddCard.reset();

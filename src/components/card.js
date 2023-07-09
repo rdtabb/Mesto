@@ -1,5 +1,6 @@
-import { templateElement, cardsSection, imagePopup, api } from "./utils";
+import { templateElement, cardsSection, imagePopup } from "./utils";
 import { PopupWithImage } from "./PopupWithImage.js";
+import { api } from "../pages";
 
 function checkIfLiked(card, id) {
   return card.likes.some((like) => like._id === id);

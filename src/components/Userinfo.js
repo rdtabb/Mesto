@@ -1,20 +1,15 @@
-// const selectors = {
-//   name: 'profile__header',
-//   status: 'profile__description',
-//   avatar: 'profile__avatar'
-// }
 export default class Userinfo {
-  constructor({ name, status, id, avatar }) {
+  constructor({ name, about, _id, avatar }) {
     this._name = name;
-    this._status = status;
+    this._status = about;
     this._avatar = avatar;
-    this._id = id;
+    this._id = _id;
   }
 
   setUserInfo() {
-    document.querySelector('.profile__header').textContent = this._name;
-    document.querySelector('.profile__description').textContent = this._status;
-    document.querySelector('.profile__avatar').src = this._avatar;
+    document.querySelector(".profile__header").textContent = this._name;
+    document.querySelector(".profile__description").textContent = this._status;
+    document.querySelector(".profile__avatar").src = this._avatar;
   }
 
   checkId(id) {

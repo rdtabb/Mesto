@@ -91,12 +91,12 @@ export class Api {
     this._base_url = base_url;
     this._headers = headers;
   }
-//todo rename to parseResponse
+  //todo rename to parseResponse
   _checkResponse(res) {
     if (!res.ok) return Promise.reject(`Ошибка ${res.status}`);
     return res.json();
   }
-//todo rename to _fetch
+  //todo rename to _fetch
   _request(url, options) {
     return fetch(url, options).then(this._checkResponse);
   }
