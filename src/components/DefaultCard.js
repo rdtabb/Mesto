@@ -1,6 +1,6 @@
-import Card from "./ParentCard";
+import Card from "./Card";
 
-export class DefaultCard extends Card {
+export default class DefaultCard extends Card {
   constructor(selector, methods, cardObject, userId) {
     super(selector, methods, cardObject, userId);
   }

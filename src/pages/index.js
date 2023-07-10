@@ -1,10 +1,13 @@
 import "./index.css";
-import { PopupWithForm } from "../components/PopupWithForm.js";
-import FormValidate from "../components/validate";
-import { selectors, toggleButtonState } from "../components/validate";
+import PopupWithImage from "../components/PopupWithImage";
+import PopupWithForm from "../components/PopupWithForm.js";
+import FormValidate, { selectors } from "../components/FormValidate";
+import Userinfo from "../components/Userinfo";
+import Section from "../components/Section";
+import UserCard from "../components/UserCard";
+import DefaultCard from "../components/DefaultCard";
+import Api, { config } from "../components/Api";
 import {
-  showLoadingText,
-  hideLoadingText,
   profileAvatar,
   avatarPopup,
   formEditAvatarLoadingButton,
@@ -26,13 +29,10 @@ import {
   buttonEditProfile,
   formEditAvatar,
 } from "../components/utils";
-import Userinfo from "../components/Userinfo";
-import Section from "../components/Section";
-import UserCard from "../components/UserCard";
-import { DefaultCard } from "../components/DefaultCard";
-import { Api, config } from "../api/Api";
-import { PopupWithImage } from "../components/PopupWithImage";
 
+// ------------------------------------------------------------------------------------------------------------
+
+const validator = new FormValidate(selectors);
 export const api = new Api(config);
 const popupImage = new PopupWithImage(imagePopup);
 const cardMethods = {
@@ -67,15 +67,14 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
     cardsSection.renderItems();
   })
   .catch((err) => console.log(err));
+
 // ------------------------------------------------------------------------------------------------------------
-//todo disable submit button onload
 //todo бахнуть тень на мусорку
-// rename Card class file
+
 profileAvatar.addEventListener("click", () => {
   const popup = new PopupWithForm(avatarPopup, (e) => {
     e.preventDefault();
-    showLoadingText(formEditAvatarLoadingButton);
-
+    popup.showLoadingText(formEditAvatarLoadingButton);
     api
       .handleChangeUserAvatar(inputAvatar.value)
       .then((res) => {
@@ -88,7 +87,7 @@ profileAvatar.addEventListener("click", () => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        hideLoadingText(formEditAvatarLoadingButton);
+        popup.hideLoadingText(formEditAvatarLoadingButton);
       });
   });
   popup.open();
@@ -99,8 +98,7 @@ buttonEditProfile.addEventListener("click", () => {
   inputStatus.value = profileDescription.textContent;
   const popup = new PopupWithForm(profilePopup, (e) => {
     e.preventDefault();
-    showLoadingText(formEditProfileLoadingButton);
-
+    popup.showLoadingText(formEditProfileLoadingButton);
     api
       .handleChangeUserData(inputName.value, inputStatus.value)
       .then((res) => {
@@ -112,7 +110,7 @@ buttonEditProfile.addEventListener("click", () => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        hideLoadingText(formEditProfileLoadingButton);
+        popup.hideLoadingText(formEditProfileLoadingButton);
       });
   });
 
@@ -134,7 +132,7 @@ buttonAddCard.addEventListener("click", () => {
       name: inputPlace.value,
     };
 
-    showLoadingText(formAddLoadingButton);
+    popup.showLoadingText(formAddLoadingButton);
 
     api
       .handleAddCard(card)
@@ -143,24 +141,24 @@ buttonAddCard.addEventListener("click", () => {
           "#card-template",
           cardMethods,
           res,
-          res._id,
+          res._id
         );
         const generatedCard = cardEl.generate();
         cardsSection.prepend(generatedCard);
       })
       .then(() => {
         formAddCard.reset();
-        toggleButtonState(selectors, inputList, buttonElement);
+        validator._toggleButtonState(inputList, buttonElement);
         popup.close();
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        hideLoadingText(formAddLoadingButton);
+        popup.hideLoadingText(formAddLoadingButton);
       });
   });
   popup.open();
 });
 
 // ------------------------------------------------------------------------------------------------------------
-const validator = new FormValidate(selectors);
+
 validator.enableValidation();
