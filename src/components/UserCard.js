@@ -1,4 +1,4 @@
-import Card from "./ParentCard";
+import Card from "./ParentCard.js";
 
 /**
  * @param selector
@@ -7,19 +7,21 @@ import Card from "./ParentCard";
  * @param cardObject
  */
 export default class UserCard extends Card {
-  constructor(selector, id, methods, cardObject) {
-    super(selector, id, methods, cardObject);
+  constructor(selector, methods, cardObject, userId) {
+    super(selector, methods, cardObject, userId);
     this._handleDeleteCard = methods.handleDeleteCard;
+  }
+
+  _addDeleteHandler() {
+    this._trashCan.addEventListener("click", () => {
+      this._handleDeleteCard(this._id)
+        .then(() => this._element.remove())
+        .catch((err) => console.log(err));
+    })
   }
 
   _setEventListeners() {
     super._setEventListeners();
-    this._element
-      .querySelector(".card__delete")
-      .addEventListener("click", () => {
-        this._handleDeleteCard(this._id)
-          .then(() => this._element.remove())
-          .catch((err) => console.log(err));
-      });
+    this._addDeleteHandler()
   }
 }

@@ -1,3 +1,4 @@
+
 /** Сущность карточки места
  * @param selector - селектор для поиска шаблона в html
  * @param id - идентификатор карточки
@@ -13,6 +14,12 @@ export default class Card {
     this._openImagePopup = methods.openImagePopup;
     this._cardObject = cardObject;
     this._userId = userId;
+
+    this._getElement();
+    this.likeButton = this._element.querySelector(".card__like");
+    this.likesCounter = this._element.querySelector(".card__number");
+    this.cardImage = this._element.querySelector(".card__image");
+    this._trashCan = this._element.querySelector(".card__delete");
   }
 
   _getElement() {
@@ -24,87 +31,62 @@ export default class Card {
     return this._element;
   }
 
-  _checkIfLiked() {
-    return this._cardObject.likes.some((like) => (like._id = this._userId));
+  _isLiked() {
+    return this._cardObject.likes.some((like) => (like._id === this._userId));
   }
 
-  _updateUiOnUnlike(likeButton, number) {
-    this._handleUnlikeCard(this._id)
-      .then((res) => {
-        number.textContent = res.likes.length;
-        likeButton.classList.remove("card__like_true");
-        likeButton.addEventListener(
-          "click",
-          function likeEventHandler() {
-            this._updateUiOnLike(likeButton, number);
-            likeButton.removeEventListener("click", likeEventHandler);
-          }.bind(this)
-        );
-      })
-      .catch((err) => console.log(err));
-  }
-
-  _updateUiOnLike(likeButton, number) {
-    this._handleLikeCard(this._id)
-      .then((res) => {
-        number.textContent = res.likes.length;
-        likeButton.classList.add("card__like_true");
-        likeButton.addEventListener(
-          "click",
-          function unlikeEventHandler() {
-            this._updateUiOnUnlike(likeButton, number);
-            likeButton.removeEventListener("click", unlikeEventHandler);
-          }.bind(this)
-        );
-      })
-      .catch((err) => console.log(err));
-  }
-
-  _addLikeHandler(likeButton, number) {
-    const isLiked = this._checkIfLiked();
+  _handleLike() {
+    const isLiked = this._isLiked();
+    console.log('isLiked: ' + isLiked)
     if (isLiked) {
-      likeButton.classList.add("card__like_true");
-      likeButton.addEventListener(
-        "click",
-        function unlikeEventHandler() {
-          this._updateUiOnUnlike(likeButton, number);
-          likeButton.removeEventListener("click", unlikeEventHandler);
-        }.bind(this)
-      );
+      this._handleUnlikeCard(this._id)
+        .then(response => {
+          console.log('deleted like')
+          this.likesCounter.textContent = response.likes.length;
+          this._cardObject.likes = response.likes;
+          this.likeButton.classList.remove("card__like_true");
+        })
     } else {
-      likeButton.classList.remove("card__like_true");
-      likeButton.addEventListener(
-        "click",
-        function likeEventHandler() {
-          this._updateUiOnLike(likeButton, number);
-          likeButton.removeEventListener("click", likeEventHandler);
-        }.bind(this)
-      );
+      console.log('liked')
+
+      this._handleLikeCard(this._id)
+        .then(response => {
+          this.likesCounter.textContent = response.likes.length;
+          this._cardObject.likes = response.likes;
+          this.likeButton.classList.add("card__like_true");
+        })
     }
   }
 
-  _setEventListeners() {
-    const likeButton = this._element.querySelector(".card__like");
-    const number = this._element.querySelector(".card__number");
-    this._addLikeHandler(likeButton, number);
+  _addLikeHandler() {
+    this.likeButton.addEventListener('click', () => {
+      this._handleLike()
+    })
+  }
 
-    this._element
-      .querySelector(".card__image")
-      .addEventListener("click", () => {
+  _addOpenPopupHandler() {
+    this.cardImage.addEventListener("click", () => {
         this._openImagePopup(this._cardObject.link, this._cardObject.name);
       });
   }
 
+  _setEventListeners() {
+    this._addLikeHandler();
+    this._addOpenPopupHandler();
+  }
+
   generate() {
-    this._element = this._getElement();
 
     const cardImage = this._element.querySelector(".card__image");
-    const cardLikesNumber = this._element.querySelector(".card__number");
+    const cardLikesAmount = this._element.querySelector(".card__number");
     const cardDescription = this._element.querySelector(".card__description");
+
     cardImage.src = this._cardObject.link;
     cardImage.alt = this._cardObject.name;
     cardDescription.textContent = this._cardObject.name;
-    cardLikesNumber.textContent = this._cardObject.likes.length;
+    cardLikesAmount.textContent = this._cardObject.likes.length;
+
+    this._isLiked() && this.likeButton.classList.add("card__like_true");
 
     this._setEventListeners();
 

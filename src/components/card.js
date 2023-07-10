@@ -3,7 +3,7 @@ import { PopupWithImage } from "./PopupWithImage.js";
 import { api } from "../pages";
 
 function checkIfLiked(card, id) {
-  return card.likes.some((like) => like._id === id);
+  return card.likes.some((like) => like._id ===  id);
 }
 
 function handleUpdateUIonLike(id, likeButton, number) {

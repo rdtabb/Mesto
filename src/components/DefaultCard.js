@@ -1,13 +1,13 @@
 import Card from "./ParentCard";
 
 export class DefaultCard extends Card {
-  constructor(selector, id, methods, cardObject) {
-    super(selector, id, methods, cardObject);
+  constructor(selector, methods, cardObject, userId) {
+    super(selector, methods, cardObject, userId);
   }
 
   generate() {
-    this._element = super.generate();
-    this._element.querySelector(".card__delete").remove();
+    super.generate();
+    this._trashCan.remove();
 
     return this._element;
   }

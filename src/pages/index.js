@@ -32,9 +32,7 @@ import UserCard from "../components/UserCard";
 import { DefaultCard } from "../components/DefaultCard";
 import { Api, config } from "../api/Api";
 import { PopupWithImage } from "../components/PopupWithImage";
-// ------------------------------------------------------------------------------------------------------------
 
-// ------------------------------------------------------------------------------------------------------------
 export const api = new Api(config);
 const popupImage = new PopupWithImage(imagePopup);
 const cardMethods = {
@@ -143,11 +141,12 @@ buttonAddCard.addEventListener("click", () => {
       .then((res) => {
         const cardEl = new UserCard(
           "#card-template",
-          res._id,
           cardMethods,
-          res
+          res,
+          res._id,
         );
-        cardsSection.prepend(cardEl);
+        const generatedCard = cardEl.generate();
+        cardsSection.prepend(generatedCard);
       })
       .then(() => {
         formAddCard.reset();
