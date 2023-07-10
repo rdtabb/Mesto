@@ -2,7 +2,6 @@ import "./index.css";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import FormValidate from "../components/validate";
 import { selectors, toggleButtonState } from "../components/validate";
-import { createCard } from "../components/card";
 import {
   showLoadingText,
   hideLoadingText,
@@ -40,6 +39,7 @@ export const api = new Api(config);
 const popupImage = new PopupWithImage(imagePopup);
 const cardMethods = {
   handleLikeCard: api.handleLike.bind(api),
+  handleUnlikeCard: api.handleUnlike.bind(api),
   handleDeleteCard: api.handleDeleteCard.bind(api),
   openImagePopup: popupImage.openImagePopup.bind(popupImage),
 };

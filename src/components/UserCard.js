@@ -16,6 +16,10 @@ export default class UserCard extends Card {
     super._setEventListeners();
     this._element
       .querySelector(".card__delete")
-      .addEventListener("click", () => this._handleDeleteCard(this._id));
+      .addEventListener("click", () => {
+        this._handleDeleteCard(this._id)
+          .then(() => this._element.remove())
+          .catch((err) => console.log(err));
+      });
   }
 }
