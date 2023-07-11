@@ -41,18 +41,18 @@ const cardMethods = {
   handleDeleteCard: api.handleDeleteCard.bind(api),
   openImagePopup: popupImage.openImagePopup.bind(popupImage),
 };
+
 const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
+const user = await userInfoHandler.getUserInfo();
+
+userInfoHandler.setUserInfo(user);
 Promise.all([api.handleGetPosts(), api.handleGetUserData()])
   .then(([postsData, userData]) => {
-    const user = userInfoHandler.getUserInfo();
-    console.log("user in index.js");
-    console.log(user);
-    userInfoHandler.setUserInfo(user);
     const cardsSection = new Section(
       {
         data: postsData,
         renderer: (item) => {
-          const card = userInfoHandler.checkId(item.owner._id)
+          const card = userInfoHandler.checkId(userData._id, item.owner._id)
             ? new UserCard("#card-template", cardMethods, item, userData._id)
             : new DefaultCard(
                 "#card-template",
@@ -72,7 +72,6 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
   .catch((err) => console.log(err));
 
 // ------------------------------------------------------------------------------------------------------------
-//todo бахнуть тень на мусорку
 
 profileAvatar.addEventListener("click", () => {
   const popup = new PopupWithForm(avatarPopup, (e) => {

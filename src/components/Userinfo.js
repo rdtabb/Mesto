@@ -6,16 +6,9 @@ export default class Userinfo {
     this._profileAvatar = document.querySelector(".profile__avatar");
   }
 
-  getUserInfo() {
-    this._getUserData().then((res) => {
-      console.log(res);
-      return {
-        name: res.name,
-        about: res.about,
-        avatar: res.avatar,
-        id: res._id,
-      };
-    });
+  async getUserInfo() {
+    const result = await this._getUserData();
+    return result;
   }
 
   setUserInfo({ name, about, avatar }) {
