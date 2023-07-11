@@ -33,7 +33,7 @@ import {
 // ------------------------------------------------------------------------------------------------------------
 
 const validator = new FormValidate(selectors);
-export const api = new Api(config);
+const api = new Api(config);
 const popupImage = new PopupWithImage(imagePopup);
 const cardMethods = {
   handleLikeCard: api.handleLike.bind(api),
@@ -41,15 +41,18 @@ const cardMethods = {
   handleDeleteCard: api.handleDeleteCard.bind(api),
   openImagePopup: popupImage.openImagePopup.bind(popupImage),
 };
+const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
 Promise.all([api.handleGetPosts(), api.handleGetUserData()])
   .then(([postsData, userData]) => {
-    const user = new Userinfo(userData);
-    user.setUserInfo();
+    const user = userInfoHandler.getUserInfo();
+    console.log("user in index.js");
+    console.log(user);
+    userInfoHandler.setUserInfo(user);
     const cardsSection = new Section(
       {
         data: postsData,
         renderer: (item) => {
-          const card = user.checkId(item.owner._id)
+          const card = userInfoHandler.checkId(item.owner._id)
             ? new UserCard("#card-template", cardMethods, item, userData._id)
             : new DefaultCard(
                 "#card-template",
@@ -78,12 +81,8 @@ profileAvatar.addEventListener("click", () => {
     api
       .handleChangeUserAvatar(inputAvatar.value)
       .then((res) => {
-        const user = new Userinfo(res);
-        user.setUserInfo();
-      })
-      .then(() => {
+        userInfoHandler.setUserInfo(res);
         popup.close();
-        formEditAvatar.reset();
       })
       .catch((err) => console.log(err))
       .finally(() => {
@@ -102,10 +101,7 @@ buttonEditProfile.addEventListener("click", () => {
     api
       .handleChangeUserData(inputName.value, inputStatus.value)
       .then((res) => {
-        const user = new Userinfo(res);
-        user.setUserInfo();
-      })
-      .then(() => {
+        userInfoHandler.setUserInfo(res);
         popup.close();
       })
       .catch((err) => console.log(err))
@@ -148,7 +144,7 @@ buttonAddCard.addEventListener("click", () => {
       })
       .then(() => {
         formAddCard.reset();
-        validator._toggleButtonState(inputList, buttonElement);
+        validator.toggleButtonState(inputList, buttonElement);
         popup.close();
       })
       .catch((err) => console.log(err))

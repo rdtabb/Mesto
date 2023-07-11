@@ -38,17 +38,21 @@ export default class Card {
   _handleLike() {
     const isLiked = this._isLiked();
     if (isLiked) {
-      this._handleUnlikeCard(this._id).then((response) => {
-        this.likesCounter.textContent = response.likes.length;
-        this._cardObject.likes = response.likes;
-        this.likeButton.classList.remove("card__like_true");
-      });
+      this._handleUnlikeCard(this._id)
+        .then((response) => {
+          this.likesCounter.textContent = response.likes.length;
+          this._cardObject.likes = response.likes;
+          this.likeButton.classList.remove("card__like_true");
+        })
+        .catch((err) => console.log(err));
     } else {
-      this._handleLikeCard(this._id).then((response) => {
-        this.likesCounter.textContent = response.likes.length;
-        this._cardObject.likes = response.likes;
-        this.likeButton.classList.add("card__like_true");
-      });
+      this._handleLikeCard(this._id)
+        .then((response) => {
+          this.likesCounter.textContent = response.likes.length;
+          this._cardObject.likes = response.likes;
+          this.likeButton.classList.add("card__like_true");
+        })
+        .catch((err) => console.log(err));
     }
   }
 

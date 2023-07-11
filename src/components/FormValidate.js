@@ -44,7 +44,7 @@ export default class FormValidate {
     });
   }
 
-  _toggleButtonState(inputList, buttonElement) {
+  toggleButtonState(inputList, buttonElement) {
     if (this._hasInvalidInput(inputList)) {
       buttonElement.classList.add(this._inactiveButtonClass);
       buttonElement.setAttribute("disabled", "true");
@@ -82,10 +82,10 @@ export default class FormValidate {
       formElement.querySelectorAll(this._inputSelector)
     );
     const buttonElement = formElement.querySelector(this._submitButtonSelector);
-    this._toggleButtonState(inputList, buttonElement);
+    this.toggleButtonState(inputList, buttonElement);
     inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
-        this._toggleButtonState(inputList, buttonElement);
+        this.toggleButtonState(inputList, buttonElement);
         this._checkInputValidity(formElement, inputElement);
       });
     });
