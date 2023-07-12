@@ -65,6 +65,7 @@ export default class Card {
   _addOpenPopupHandler() {
     this.cardImage.addEventListener("click", () => {
       this._openImagePopup(this._cardObject.link, this._cardObject.name);
+
     });
   }
 

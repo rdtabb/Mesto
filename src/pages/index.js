@@ -9,37 +9,32 @@ import DefaultCard from "../components/DefaultCard";
 import Api, { config } from "../components/Api";
 import {
   profileAvatar,
-  avatarPopup,
   formEditAvatarLoadingButton,
-  imagePopup,
   inputAvatar,
   formAddLoadingButton,
   formAddCard,
   cardsSection,
   inputPlace,
   inputUrl,
-  addCardPopup,
   buttonAddCard,
   formEditProfileLoadingButton,
   inputStatus,
   inputName,
-  profilePopup,
   profileDescription,
   profileHeader,
   buttonEditProfile,
-  formEditAvatar,
 } from "../components/utils";
 
 // ------------------------------------------------------------------------------------------------------------
 
 const validator = new FormValidate(selectors);
 const api = new Api(config);
-const popupImage = new PopupWithImage(imagePopup);
+const popupImage = new PopupWithImage('.popup_image');
 const cardMethods = {
   handleLikeCard: api.handleLike.bind(api),
   handleUnlikeCard: api.handleUnlike.bind(api),
   handleDeleteCard: api.handleDeleteCard.bind(api),
-  openImagePopup: popupImage.openImagePopup.bind(popupImage),
+  openImagePopup: popupImage.openImage.bind(popupImage),
 };
 
 const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
@@ -74,7 +69,7 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
 // ------------------------------------------------------------------------------------------------------------
 
 profileAvatar.addEventListener("click", () => {
-  const popup = new PopupWithForm(avatarPopup, (e) => {
+  const popup = new PopupWithForm('.popup_avatar', (e) => {
     e.preventDefault();
     popup.showLoadingText(formEditAvatarLoadingButton);
     api
@@ -88,13 +83,15 @@ profileAvatar.addEventListener("click", () => {
         popup.hideLoadingText(formEditAvatarLoadingButton);
       });
   });
+
   popup.open();
+  popup.setEventListeners();
 });
 
 buttonEditProfile.addEventListener("click", () => {
   inputName.value = profileHeader.textContent;
   inputStatus.value = profileDescription.textContent;
-  const popup = new PopupWithForm(profilePopup, (e) => {
+  const popup = new PopupWithForm('.popup_profile', (e) => {
     e.preventDefault();
     popup.showLoadingText(formEditProfileLoadingButton);
     api
@@ -110,10 +107,11 @@ buttonEditProfile.addEventListener("click", () => {
   });
 
   popup.open();
+  popup.setEventListeners();
 });
 
 buttonAddCard.addEventListener("click", () => {
-  const popup = new PopupWithForm(addCardPopup, (e) => {
+  const popup = new PopupWithForm('.popup_addcard', (e) => {
     e.preventDefault();
 
     const inputList = Array.from(
@@ -151,7 +149,9 @@ buttonAddCard.addEventListener("click", () => {
         popup.hideLoadingText(formAddLoadingButton);
       });
   });
+
   popup.open();
+  popup.setEventListeners();
 });
 
 // ------------------------------------------------------------------------------------------------------------
