@@ -33,7 +33,7 @@ export default class Api {
     });
   }
 
-  handleChangeUserData(name, about) {
+  handleChangeUserData({name, about}) {
     return this._request(`${this._base_url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -44,7 +44,7 @@ export default class Api {
     });
   }
 
-  handleChangeUserAvatar(avatar) {
+  handleChangeUserAvatar({avatar}) {
     return this._request(`${this._base_url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
@@ -54,13 +54,13 @@ export default class Api {
     });
   }
 
-  handleAddCard(card) {
+  handleAddCard({name, link}) {
     return this._request(`${this._base_url}/cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
-        name: card.name,
-        link: card.link,
+        name,
+        link,
       }),
     });
   }

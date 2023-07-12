@@ -10,12 +10,9 @@ import Api, { config } from "../components/Api";
 import {
   profileAvatar,
   formEditAvatarLoadingButton,
-  inputAvatar,
   formAddLoadingButton,
   formAddCard,
   cardsSection,
-  inputPlace,
-  inputUrl,
   buttonAddCard,
   formEditProfileLoadingButton,
   inputStatus,
@@ -69,11 +66,11 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
 // ------------------------------------------------------------------------------------------------------------
 
 profileAvatar.addEventListener("click", () => {
-  const popup = new PopupWithForm('.popup_avatar', (e) => {
+  const popup = new PopupWithForm('.popup_avatar', (e, inputValuesArr) => {
     e.preventDefault();
     popup.showLoadingText(formEditAvatarLoadingButton);
     api
-      .handleChangeUserAvatar(inputAvatar.value)
+      .handleChangeUserAvatar(inputValuesArr)
       .then((res) => {
         userInfoHandler.setUserInfo(res);
         popup.close();
@@ -91,11 +88,11 @@ profileAvatar.addEventListener("click", () => {
 buttonEditProfile.addEventListener("click", () => {
   inputName.value = profileHeader.textContent;
   inputStatus.value = profileDescription.textContent;
-  const popup = new PopupWithForm('.popup_profile', (e) => {
+  const popup = new PopupWithForm('.popup_profile', (e, inputValuesArr) => {
     e.preventDefault();
     popup.showLoadingText(formEditProfileLoadingButton);
     api
-      .handleChangeUserData(inputName.value, inputStatus.value)
+      .handleChangeUserData(inputValuesArr)
       .then((res) => {
         userInfoHandler.setUserInfo(res);
         popup.close();
@@ -111,7 +108,7 @@ buttonEditProfile.addEventListener("click", () => {
 });
 
 buttonAddCard.addEventListener("click", () => {
-  const popup = new PopupWithForm('.popup_addcard', (e) => {
+  const popup = new PopupWithForm('.popup_addcard', (e, inputValuesArr) => {
     e.preventDefault();
 
     const inputList = Array.from(
@@ -120,15 +117,11 @@ buttonAddCard.addEventListener("click", () => {
     const buttonElement = formAddCard.querySelector(
       `${selectors.submitButtonSelector}`
     );
-    const card = {
-      link: inputUrl.value,
-      name: inputPlace.value,
-    };
 
     popup.showLoadingText(formAddLoadingButton);
 
     api
-      .handleAddCard(card)
+      .handleAddCard(inputValuesArr)
       .then((res) => {
         const cardEl = new UserCard(
           "#card-template",
