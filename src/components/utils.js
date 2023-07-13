@@ -1,12 +1,9 @@
-export const templateElement = document.querySelector("#card-template");
 export const cardsSection = document.querySelector(".cards");
 export const profileHeader = document.querySelector(".profile__header");
 export const profileDescription = document.querySelector(
   ".profile__description"
 );
 export const profileAvatar = document.querySelector(".profile__avatar");
-export const popupCover = document.querySelector(".popup__cover");
-export const popupCaption = document.querySelector(".popup__caption");
 export const formEditProfile = document.querySelector(".popup__form_profile");
 export const formEditProfileLoadingButton =
   formEditProfile.querySelector(".popup__submit");
@@ -15,18 +12,11 @@ export const formAddLoadingButton = formAddCard.querySelector(".popup__submit");
 export const formEditAvatar = document.querySelector(".popup__form_avatar");
 export const formEditAvatarLoadingButton =
   formEditAvatar.querySelector(".popup__submit");
-export const inputUrl = document.querySelector(".popup__input_type_url");
-export const inputPlace = document.querySelector(".popup__input_type_place");
 export const inputName = document.querySelector(".popup__input_type_name");
 export const inputStatus = document.querySelector(
   ".popup__input_type_description"
 );
-export const inputAvatar = document.querySelector(".popup__input_type_avatar");
 export const buttonEditProfile = document.querySelector(
   ".profile__edit-button"
 );
 export const buttonAddCard = document.querySelector(".profile__add-button");
-export const profilePopup = document.querySelector(".popup_profile");
-export const addCardPopup = document.querySelector(".popup_addcard");
-export const imagePopup = document.querySelector(".popup_image");
-export const avatarPopup = document.querySelector(".popup_avatar");

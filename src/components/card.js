@@ -16,10 +16,12 @@ export default class Card {
     this._userId = userId;
 
     this._getElement();
-    this.likeButton = this._element.querySelector(".card__like");
-    this.likesCounter = this._element.querySelector(".card__number");
-    this.cardImage = this._element.querySelector(".card__image");
+    this._likeButton = this._element.querySelector(".card__like");
+    this._likesCounter = this._element.querySelector(".card__number");
+    this._image = this._element.querySelector(".card__image");
     this._trashCan = this._element.querySelector(".card__delete");
+    this._Description = this._element.querySelector(".card__description");
+
   }
 
   _getElement() {
@@ -27,8 +29,6 @@ export default class Card {
       .querySelector(this._selector)
       .content.querySelector(".card")
       .cloneNode(true);
-
-    return this._element;
   }
 
   _isLiked() {
@@ -40,30 +40,30 @@ export default class Card {
     if (isLiked) {
       this._handleUnlikeCard(this._id)
         .then((response) => {
-          this.likesCounter.textContent = response.likes.length;
+          this._likesCounter.textContent = response.likes.length;
           this._cardObject.likes = response.likes;
-          this.likeButton.classList.remove("card__like_true");
+          this._likeButton.classList.remove("card__like_true");
         })
         .catch((err) => console.log(err));
     } else {
       this._handleLikeCard(this._id)
         .then((response) => {
-          this.likesCounter.textContent = response.likes.length;
+          this._likesCounter.textContent = response.likes.length;
           this._cardObject.likes = response.likes;
-          this.likeButton.classList.add("card__like_true");
+          this._likeButton.classList.add("card__like_true");
         })
         .catch((err) => console.log(err));
     }
   }
 
   _addLikeHandler() {
-    this.likeButton.addEventListener("click", () => {
+    this._likeButton.addEventListener("click", () => {
       this._handleLike();
     });
   }
 
   _addOpenPopupHandler() {
-    this.cardImage.addEventListener("click", () => {
+    this._image.addEventListener("click", () => {
       this._openImagePopup(this._cardObject.link, this._cardObject.name);
 
     });
@@ -75,16 +75,12 @@ export default class Card {
   }
 
   generate() {
-    const cardImage = this._element.querySelector(".card__image");
-    const cardLikesAmount = this._element.querySelector(".card__number");
-    const cardDescription = this._element.querySelector(".card__description");
+    this._image.src = this._cardObject.link;
+    this._image.alt = this._cardObject.name;
+    this._Description.textContent = this._cardObject.name;
+    this._likesCounter.textContent = this._cardObject.likes.length;
 
-    cardImage.src = this._cardObject.link;
-    cardImage.alt = this._cardObject.name;
-    cardDescription.textContent = this._cardObject.name;
-    cardLikesAmount.textContent = this._cardObject.likes.length;
-
-    this._isLiked() && this.likeButton.classList.add("card__like_true");
+    this._isLiked() && this._likeButton.classList.add("card__like_true");
 
     this._setEventListeners();
 

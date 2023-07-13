@@ -7,8 +7,7 @@ export default class Userinfo {
   }
 
   async getUserInfo() {
-    const result = await this._getUserData();
-    return result;
+    return await this._getUserData();
   }
 
   setUserInfo({ name, about, avatar }) {
