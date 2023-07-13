@@ -16,11 +16,11 @@ export default class FormValidate {
       inactiveButtonClass,
       inputErrorClass,
       errorClass,
-    }
+    },
   ) {
     this._formElement = formElement;
     this._inputList = Array.from(
-      this._formElement.querySelectorAll(inputSelector)
+      this._formElement.querySelectorAll(inputSelector),
     );
     this._submitButtonElement =
       this._formElement.querySelector(submitButtonSelector);
@@ -61,11 +61,11 @@ export default class FormValidate {
   _checkInputValidity(formElement, inputElement) {
     if (inputElement.validity.tooShort) {
       inputElement.setCustomValidity(
-        `Минимальная длина ${inputElement.getAttribute("minlength")} символа`
+        `Минимальная длина ${inputElement.getAttribute("minlength")} символа`,
       );
     } else if (inputElement.validity.patternMismatch) {
       inputElement.setCustomValidity(
-        `${inputElement.getAttribute("data-error-message")}`
+        `${inputElement.getAttribute("data-error-message")}`,
       );
     } else {
       inputElement.setCustomValidity("");
@@ -74,7 +74,7 @@ export default class FormValidate {
       this._showInputError(
         formElement,
         inputElement,
-        inputElement.validationMessage
+        inputElement.validationMessage,
       );
     } else {
       this._hideInputError(formElement, inputElement);

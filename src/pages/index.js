@@ -146,7 +146,7 @@ buttonAddCard.addEventListener("click", () => {
       })
       .then(() => {
         formAddCard.reset();
-        validator.toggleButtonState(inputList, buttonElement);
+        formAddCardValidator.toggleButtonState(inputList, buttonElement);
         popup.close();
       })
       .catch((err) => console.log(err))
