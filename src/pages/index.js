@@ -11,7 +11,6 @@ import {
   profileAvatar,
   formEditAvatarLoadingButton,
   formAddLoadingButton,
-  formAddCard,
   cardsSection,
   buttonAddCard,
   formEditProfileLoadingButton,
@@ -20,13 +19,26 @@ import {
   profileDescription,
   profileHeader,
   buttonEditProfile,
+  formEditAvatar,
+  formEditProfile,
+  formAddCard,
 } from "../components/utils";
 
 // ------------------------------------------------------------------------------------------------------------
 
-const validator = new FormValidate(selectors);
+const formEditProfileValidator = new FormValidate(formEditProfile, selectors);
+formEditProfileValidator.validate();
+
+const formEditAvatarValidator = new FormValidate(formEditAvatar, selectors);
+formEditAvatarValidator.validate();
+
+const formAddCardValidator = new FormValidate(formAddCard, selectors);
+formAddCardValidator.validate();
+
+// ------------------------------------------------------------------------------------------------------------
+
 const api = new Api(config);
-const popupImage = new PopupWithImage('.popup_image');
+const popupImage = new PopupWithImage(".popup_image");
 const cardMethods = {
   handleLikeCard: api.handleLike.bind(api),
   handleUnlikeCard: api.handleUnlike.bind(api),
@@ -50,13 +62,13 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
                 "#card-template",
                 cardMethods,
                 item,
-                userData._id
+                userData._id,
               );
           const generatedCard = card.generate();
           cardsSection.setItem(generatedCard);
         },
       },
-      ".cards"
+      ".cards",
     );
 
     cardsSection.renderItems();
@@ -66,7 +78,7 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
 // ------------------------------------------------------------------------------------------------------------
 
 profileAvatar.addEventListener("click", () => {
-  const popup = new PopupWithForm('.popup_avatar', (e, inputValuesArr) => {
+  const popup = new PopupWithForm(".popup_avatar", (e, inputValuesArr) => {
     e.preventDefault();
     popup.showLoadingText(formEditAvatarLoadingButton);
     api
@@ -88,7 +100,7 @@ profileAvatar.addEventListener("click", () => {
 buttonEditProfile.addEventListener("click", () => {
   inputName.value = profileHeader.textContent;
   inputStatus.value = profileDescription.textContent;
-  const popup = new PopupWithForm('.popup_profile', (e, inputValuesArr) => {
+  const popup = new PopupWithForm(".popup_profile", (e, inputValuesArr) => {
     e.preventDefault();
     popup.showLoadingText(formEditProfileLoadingButton);
     api
@@ -108,14 +120,14 @@ buttonEditProfile.addEventListener("click", () => {
 });
 
 buttonAddCard.addEventListener("click", () => {
-  const popup = new PopupWithForm('.popup_addcard', (e, inputValuesArr) => {
+  const popup = new PopupWithForm(".popup_addcard", (e, inputValuesArr) => {
     e.preventDefault();
 
     const inputList = Array.from(
-      formAddCard.querySelectorAll(`${selectors.inputSelector}`)
+      formAddCard.querySelectorAll(`${selectors.inputSelector}`),
     );
     const buttonElement = formAddCard.querySelector(
-      `${selectors.submitButtonSelector}`
+      `${selectors.submitButtonSelector}`,
     );
 
     popup.showLoadingText(formAddLoadingButton);
@@ -127,7 +139,7 @@ buttonAddCard.addEventListener("click", () => {
           "#card-template",
           cardMethods,
           res,
-          res._id
+          res._id,
         );
         const generatedCard = cardEl.generate();
         cardsSection.prepend(generatedCard);
@@ -146,7 +158,3 @@ buttonAddCard.addEventListener("click", () => {
   popup.open();
   popup.setEventListeners();
 });
-
-// ------------------------------------------------------------------------------------------------------------
-
-validator.enableValidation();
