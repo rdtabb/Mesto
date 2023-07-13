@@ -80,7 +80,7 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
 profileAvatar.addEventListener("click", () => {
   const popup = new PopupWithForm(".popup_avatar", (e, inputValuesArr) => {
     e.preventDefault();
-    popup.showLoadingText(formEditAvatarLoadingButton);
+    popup.showLoadingText(popup.submitButton);
     api
       .handleChangeUserAvatar(inputValuesArr)
       .then((res) => {
@@ -89,7 +89,7 @@ profileAvatar.addEventListener("click", () => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        popup.hideLoadingText(formEditAvatarLoadingButton);
+        popup.hideLoadingText(popup.submitButton);
       });
   });
 
@@ -102,7 +102,7 @@ buttonEditProfile.addEventListener("click", () => {
   inputStatus.value = profileDescription.textContent;
   const popup = new PopupWithForm(".popup_profile", (e, inputValuesArr) => {
     e.preventDefault();
-    popup.showLoadingText(formEditProfileLoadingButton);
+    popup.showLoadingText(popup.submitButton);
     api
       .handleChangeUserData(inputValuesArr)
       .then((res) => {
@@ -111,7 +111,7 @@ buttonEditProfile.addEventListener("click", () => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        popup.hideLoadingText(formEditProfileLoadingButton);
+        popup.hideLoadingText(popup.submitButton);
       });
   });
 
@@ -123,14 +123,7 @@ buttonAddCard.addEventListener("click", () => {
   const popup = new PopupWithForm(".popup_addcard", (e, inputValuesArr) => {
     e.preventDefault();
 
-    const inputList = Array.from(
-      formAddCard.querySelectorAll(`${selectors.inputSelector}`),
-    );
-    const buttonElement = formAddCard.querySelector(
-      `${selectors.submitButtonSelector}`,
-    );
-
-    popup.showLoadingText(formAddLoadingButton);
+    popup.showLoadingText(popup.submitButton);
 
     api
       .handleAddCard(inputValuesArr)
@@ -146,12 +139,12 @@ buttonAddCard.addEventListener("click", () => {
       })
       .then(() => {
         formAddCard.reset();
-        formAddCardValidator.toggleButtonState(inputList, buttonElement);
+        formAddCardValidator.toggleButtonState(popup.inputList, popup.submitButton);
         popup.close();
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        popup.hideLoadingText(formAddLoadingButton);
+        popup.hideLoadingText(popup.submitButton);
       });
   });
 
