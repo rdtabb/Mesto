@@ -9,11 +9,8 @@ import DefaultCard from "../components/DefaultCard";
 import Api, { config } from "../components/Api";
 import {
   profileAvatar,
-  formEditAvatarLoadingButton,
-  formAddLoadingButton,
   cardsSection,
   buttonAddCard,
-  formEditProfileLoadingButton,
   inputStatus,
   inputName,
   profileDescription,
