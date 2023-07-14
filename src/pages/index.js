@@ -45,8 +45,8 @@ const cardMethods = {
 
 const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
 const user = await userInfoHandler.getUserInfo();
-
 userInfoHandler.setUserInfo(user);
+
 Promise.all([api.handleGetPosts(), api.handleGetUserData()])
   .then(([postsData, userData]) => {
     const cardsSection = new Section(
@@ -97,6 +97,7 @@ profileAvatar.addEventListener("click", () => {
 buttonEditProfile.addEventListener("click", () => {
   inputName.value = profileHeader.textContent;
   inputStatus.value = profileDescription.textContent;
+
   const popup = new PopupWithForm(".popup_profile", (e, inputValuesArr) => {
     e.preventDefault();
     popup.showLoadingText(popup.submitButton);
@@ -136,7 +137,10 @@ buttonAddCard.addEventListener("click", () => {
       })
       .then(() => {
         formAddCard.reset();
-        formAddCardValidator.toggleButtonState(popup.inputList, popup.submitButton);
+        formAddCardValidator.toggleButtonState(
+          popup.inputList,
+          popup.submitButton,
+        );
         popup.close();
       })
       .catch((err) => console.log(err))
