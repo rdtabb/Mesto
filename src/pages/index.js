@@ -11,14 +11,12 @@ import {
   profileAvatar,
   cardsSection,
   buttonAddCard,
-  inputStatus,
-  inputName,
-  profileDescription,
-  profileHeader,
   buttonEditProfile,
   formEditAvatar,
   formEditProfile,
   formAddCard,
+  inputName,
+  inputStatus,
 } from "../components/utils";
 
 // ------------------------------------------------------------------------------------------------------------
@@ -32,6 +30,71 @@ formEditAvatarValidator.validate();
 const formAddCardValidator = new FormValidate(formAddCard, selectors);
 formAddCardValidator.validate();
 
+const popupAvatar = new PopupWithForm(".popup_avatar", (e, inputValuesArr) => {
+  e.preventDefault();
+  popupAvatar.showLoadingText(popupAvatar.submitButton);
+  api
+    .handleChangeUserAvatar(inputValuesArr)
+    .then((res) => {
+      userInfoHandler.setUserInfo(res)
+      userInfoHandler.renderUserInfo();
+
+      popupAvatar.close();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      popupAvatar.hideLoadingText(popupAvatar.submitButton);
+    });
+});
+
+const popupProfile = new PopupWithForm(".popup_profile", (e, inputValuesArr) => {
+  e.preventDefault();
+  popupProfile.showLoadingText(popupProfile.submitButton);
+  api
+    .handleChangeUserData(inputValuesArr)
+    .then((res) => {
+      userInfoHandler.setUserInfo(res)
+      userInfoHandler.renderUserInfo();
+
+      popupProfile.close();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      popupProfile.hideLoadingText(popupProfile.submitButton);
+    });
+});
+
+const popupAddCard = new PopupWithForm(".popup_addcard", (e, inputValuesArr) => {
+  e.preventDefault();
+
+  popupAddCard.showLoadingText(popupAddCard.submitButton);
+
+  api
+    .handleAddCard(inputValuesArr)
+    .then((res) => {
+      const cardEl = new UserCard(
+        "#card-template",
+        cardMethods,
+        res,
+        res._id,
+      );
+      const generatedCard = cardEl.generate();
+      cardsSection.prepend(generatedCard);
+    })
+    .then(() => {
+      formAddCard.reset();
+      formAddCardValidator.toggleButtonState(
+        popupAddCard.inputList,
+        popupAddCard.submitButton,
+      );
+      popupAddCard.close();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+      popupAddCard.hideLoadingText(popupAddCard.submitButton);
+    });
+});
+
 // ------------------------------------------------------------------------------------------------------------
 
 const api = new Api(config);
@@ -44,8 +107,9 @@ const cardMethods = {
 };
 
 const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
-const user = await userInfoHandler.getUserInfo();
-userInfoHandler.setUserInfo(user);
+await userInfoHandler.getUserInfo();
+
+userInfoHandler.renderUserInfo();
 
 Promise.all([api.handleGetPosts(), api.handleGetUserData()])
   .then(([postsData, userData]) => {
@@ -75,80 +139,18 @@ Promise.all([api.handleGetPosts(), api.handleGetUserData()])
 // ------------------------------------------------------------------------------------------------------------
 
 profileAvatar.addEventListener("click", () => {
-  const popup = new PopupWithForm(".popup_avatar", (e, inputValuesArr) => {
-    e.preventDefault();
-    popup.showLoadingText(popup.submitButton);
-    api
-      .handleChangeUserAvatar(inputValuesArr)
-      .then((res) => {
-        userInfoHandler.setUserInfo(res);
-        popup.close();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        popup.hideLoadingText(popup.submitButton);
-      });
-  });
-
-  popup.open();
-  popup.setEventListeners();
+  popupAvatar.open();
+  popupAvatar.setEventListeners();
 });
 
-buttonEditProfile.addEventListener("click", () => {
-  inputName.value = profileHeader.textContent;
-  inputStatus.value = profileDescription.textContent;
+buttonEditProfile.addEventListener("click",  () => {
+  userInfoHandler.setInputValue(inputName, inputStatus);
 
-  const popup = new PopupWithForm(".popup_profile", (e, inputValuesArr) => {
-    e.preventDefault();
-    popup.showLoadingText(popup.submitButton);
-    api
-      .handleChangeUserData(inputValuesArr)
-      .then((res) => {
-        userInfoHandler.setUserInfo(res);
-        popup.close();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        popup.hideLoadingText(popup.submitButton);
-      });
-  });
-
-  popup.open();
-  popup.setEventListeners();
+  popupProfile.open();
+  popupProfile.setEventListeners();
 });
 
 buttonAddCard.addEventListener("click", () => {
-  const popup = new PopupWithForm(".popup_addcard", (e, inputValuesArr) => {
-    e.preventDefault();
-
-    popup.showLoadingText(popup.submitButton);
-
-    api
-      .handleAddCard(inputValuesArr)
-      .then((res) => {
-        const cardEl = new UserCard(
-          "#card-template",
-          cardMethods,
-          res,
-          res._id,
-        );
-        const generatedCard = cardEl.generate();
-        cardsSection.prepend(generatedCard);
-      })
-      .then(() => {
-        formAddCard.reset();
-        formAddCardValidator.toggleButtonState(
-          popup.inputList,
-          popup.submitButton,
-        );
-        popup.close();
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        popup.hideLoadingText(popup.submitButton);
-      });
-  });
-
-  popup.open();
-  popup.setEventListeners();
+  popupAddCard.open();
+  popupAddCard.setEventListeners();
 });

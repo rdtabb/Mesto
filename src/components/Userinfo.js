@@ -7,13 +7,28 @@ export default class Userinfo {
   }
 
   async getUserInfo() {
-    return await this._getUserData();
+    const userData = await this._getUserData();
+    this._name = userData.name;
+    this._about = userData.about;
+    this._avatar = userData.avatar;
   }
 
   setUserInfo({ name, about, avatar }) {
-    this._profileHeader.textContent = name;
-    this._profileDescription.textContent = about;
-    this._profileAvatar.src = avatar;
+    this._name = name;
+    this._about = about;
+    this._avatar = avatar;
+  }
+
+  renderUserInfo() {
+    this._profileHeader.textContent = this._name;
+    this._profileDescription.textContent = this._about;
+    this._profileAvatar.src = this._avatar;
+  }
+
+  setInputValue(nameInput, aboutInput){
+    nameInput.value = this._name;
+    aboutInput.value = this._about;
+
   }
 
   checkId(userId, id) {
