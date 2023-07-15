@@ -6,17 +6,22 @@ export default class Userinfo {
     this._profileAvatar = document.querySelector(".profile__avatar");
   }
 
-  async getSetUserInfo() {
-    const userData = await this._getUserData();
-    this._name = userData.name;
-    this._about = userData.about;
-    this._avatar = userData.avatar;
+  _setUserInfo({ name, avatar, about }) {
+    this._name = name;
+    this._avatar = avatar;
+    this._about = about;
   }
 
-  renderUserInfo() {
-    this._profileHeader.textContent = this._name;
-    this._profileDescription.textContent = this._about;
-    this._profileAvatar.src = this._avatar;
+  async getUserInfo() {
+    const userData = await this._getUserData();
+    this._setUserInfo(userData);
+    return userData;
+  }
+
+  renderUserInfo({ name, about, avatar }) {
+    this._profileHeader.textContent = name;
+    this._profileDescription.textContent = about;
+    this._profileAvatar.src = avatar;
   }
 
   setInputValue(nameInput, aboutInput) {

@@ -9,7 +9,6 @@ import DefaultCard from "../components/DefaultCard";
 import Api, { config } from "../components/Api";
 import {
   profileAvatar,
-  cardsSection,
   buttonAddCard,
   buttonEditProfile,
   formEditAvatar,
@@ -31,8 +30,8 @@ const cardMethods = {
 };
 
 const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
-await userInfoHandler.getSetUserInfo();
-userInfoHandler.renderUserInfo();
+const userObj = await userInfoHandler.getUserInfo();
+userInfoHandler.renderUserInfo(userObj);
 
 const [postsData, userData] = await Promise.all([
   api.handleGetPosts(),
@@ -71,8 +70,8 @@ const popupAvatar = new PopupWithForm(".popup_avatar", (e, inputValuesArr) => {
   api
     .handleChangeUserAvatar(inputValuesArr)
     .then(async () => {
-      await userInfoHandler.getSetUserInfo();
-      userInfoHandler.renderUserInfo();
+      const userObj = await userInfoHandler.getUserInfo();
+      userInfoHandler.renderUserInfo(userObj);
 
       popupAvatar.close();
     })
@@ -90,8 +89,8 @@ const popupProfile = new PopupWithForm(
     api
       .handleChangeUserData(inputValuesArr)
       .then(async () => {
-        await userInfoHandler.getSetUserInfo();
-        userInfoHandler.renderUserInfo();
+        const userObj = await userInfoHandler.getUserInfo();
+        userInfoHandler.renderUserInfo(userObj);
 
         popupProfile.close();
       })
