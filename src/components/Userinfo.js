@@ -6,17 +6,11 @@ export default class Userinfo {
     this._profileAvatar = document.querySelector(".profile__avatar");
   }
 
-  async getUserInfo() {
+  async getSetUserInfo() {
     const userData = await this._getUserData();
     this._name = userData.name;
     this._about = userData.about;
     this._avatar = userData.avatar;
-  }
-
-  setUserInfo({ name, about, avatar }) {
-    this._name = name;
-    this._about = about;
-    this._avatar = avatar;
   }
 
   renderUserInfo() {
@@ -25,10 +19,9 @@ export default class Userinfo {
     this._profileAvatar.src = this._avatar;
   }
 
-  setInputValue(nameInput, aboutInput){
+  setInputValue(nameInput, aboutInput) {
     nameInput.value = this._name;
     aboutInput.value = this._about;
-
   }
 
   checkId(userId, id) {

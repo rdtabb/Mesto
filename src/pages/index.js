@@ -21,6 +21,41 @@ import {
 
 // ------------------------------------------------------------------------------------------------------------
 
+const api = new Api(config);
+const popupImage = new PopupWithImage(".popup_image");
+const cardMethods = {
+  handleLikeCard: api.handleLike.bind(api),
+  handleUnlikeCard: api.handleUnlike.bind(api),
+  handleDeleteCard: api.handleDeleteCard.bind(api),
+  openImagePopup: popupImage.openImage.bind(popupImage),
+};
+
+const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
+await userInfoHandler.getSetUserInfo();
+userInfoHandler.renderUserInfo();
+
+const [postsData, userData] = await Promise.all([
+  api.handleGetPosts(),
+  api.handleGetUserData(),
+]);
+const feedSection = new Section(
+  {
+    data: postsData,
+    renderer: (item) => {
+      const card = userInfoHandler.checkId(userData._id, item.owner._id)
+        ? new UserCard("#card-template", cardMethods, item, userData._id)
+        : new DefaultCard("#card-template", cardMethods, item, userData._id);
+      const generatedCard = card.generate();
+      feedSection.setItem(generatedCard);
+    },
+  },
+  ".cards",
+);
+
+feedSection.renderItems();
+
+// ------------------------------------------------------------------------------------------------------------
+
 const formEditProfileValidator = new FormValidate(formEditProfile, selectors);
 formEditProfileValidator.validate();
 
@@ -35,8 +70,8 @@ const popupAvatar = new PopupWithForm(".popup_avatar", (e, inputValuesArr) => {
   popupAvatar.showLoadingText(popupAvatar.submitButton);
   api
     .handleChangeUserAvatar(inputValuesArr)
-    .then((res) => {
-      userInfoHandler.setUserInfo(res)
+    .then(async () => {
+      await userInfoHandler.getSetUserInfo();
       userInfoHandler.renderUserInfo();
 
       popupAvatar.close();
@@ -47,94 +82,60 @@ const popupAvatar = new PopupWithForm(".popup_avatar", (e, inputValuesArr) => {
     });
 });
 
-const popupProfile = new PopupWithForm(".popup_profile", (e, inputValuesArr) => {
-  e.preventDefault();
-  popupProfile.showLoadingText(popupProfile.submitButton);
-  api
-    .handleChangeUserData(inputValuesArr)
-    .then((res) => {
-      userInfoHandler.setUserInfo(res)
-      userInfoHandler.renderUserInfo();
+const popupProfile = new PopupWithForm(
+  ".popup_profile",
+  (e, inputValuesArr) => {
+    e.preventDefault();
+    popupProfile.showLoadingText(popupProfile.submitButton);
+    api
+      .handleChangeUserData(inputValuesArr)
+      .then(async () => {
+        await userInfoHandler.getSetUserInfo();
+        userInfoHandler.renderUserInfo();
 
-      popupProfile.close();
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      popupProfile.hideLoadingText(popupProfile.submitButton);
-    });
-});
+        popupProfile.close();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        popupProfile.hideLoadingText(popupProfile.submitButton);
+      });
+  },
+);
 
-const popupAddCard = new PopupWithForm(".popup_addcard", (e, inputValuesArr) => {
-  e.preventDefault();
+const popupAddCard = new PopupWithForm(
+  ".popup_addcard",
+  (e, inputValuesArr) => {
+    e.preventDefault();
 
-  popupAddCard.showLoadingText(popupAddCard.submitButton);
+    popupAddCard.showLoadingText(popupAddCard.submitButton);
 
-  api
-    .handleAddCard(inputValuesArr)
-    .then((res) => {
-      const cardEl = new UserCard(
-        "#card-template",
-        cardMethods,
-        res,
-        res._id,
-      );
-      const generatedCard = cardEl.generate();
-      cardsSection.prepend(generatedCard);
-    })
-    .then(() => {
-      formAddCard.reset();
-      formAddCardValidator.toggleButtonState(
-        popupAddCard.inputList,
-        popupAddCard.submitButton,
-      );
-      popupAddCard.close();
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      popupAddCard.hideLoadingText(popupAddCard.submitButton);
-    });
-});
+    api
+      .handleAddCard(inputValuesArr)
+      .then((res) => {
+        const cardEl = new UserCard(
+          "#card-template",
+          cardMethods,
+          res,
+          res._id,
+        );
+        feedSection.prependNewCard(cardEl.generate());
+      })
+      .then(() => {
+        formAddCard.reset();
+        formAddCardValidator.toggleButtonState(
+          popupAddCard.inputList,
+          popupAddCard.submitButton,
+        );
+        popupAddCard.close();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        popupAddCard.hideLoadingText(popupAddCard.submitButton);
+      });
+  },
+);
 
 // ------------------------------------------------------------------------------------------------------------
-
-const api = new Api(config);
-const popupImage = new PopupWithImage(".popup_image");
-const cardMethods = {
-  handleLikeCard: api.handleLike.bind(api),
-  handleUnlikeCard: api.handleUnlike.bind(api),
-  handleDeleteCard: api.handleDeleteCard.bind(api),
-  openImagePopup: popupImage.openImage.bind(popupImage),
-};
-
-const userInfoHandler = new Userinfo(api.handleGetUserData.bind(api));
-await userInfoHandler.getUserInfo();
-
-userInfoHandler.renderUserInfo();
-
-Promise.all([api.handleGetPosts(), api.handleGetUserData()])
-  .then(([postsData, userData]) => {
-    const cardsSection = new Section(
-      {
-        data: postsData,
-        renderer: (item) => {
-          const card = userInfoHandler.checkId(userData._id, item.owner._id)
-            ? new UserCard("#card-template", cardMethods, item, userData._id)
-            : new DefaultCard(
-                "#card-template",
-                cardMethods,
-                item,
-                userData._id,
-              );
-          const generatedCard = card.generate();
-          cardsSection.setItem(generatedCard);
-        },
-      },
-      ".cards",
-    );
-
-    cardsSection.renderItems();
-  })
-  .catch((err) => console.log(err));
 
 // ------------------------------------------------------------------------------------------------------------
 
@@ -143,7 +144,7 @@ profileAvatar.addEventListener("click", () => {
   popupAvatar.setEventListeners();
 });
 
-buttonEditProfile.addEventListener("click",  () => {
+buttonEditProfile.addEventListener("click", () => {
   userInfoHandler.setInputValue(inputName, inputStatus);
 
   popupProfile.open();
