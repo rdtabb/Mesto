@@ -1,25 +1,16 @@
-import { profileDescription, profileHeader, profileAvatar } from "../pages";
+export const cardsSection = document.querySelector(".cards");
 
-export function showLoadingText(element) {
-  element.textContent = "Сохраняется...";
-}
+export const profileAvatar = document.querySelector(".profile__avatar");
+export const formEditProfile = document.querySelector(".popup__form_profile");
 
-export function setUserData(about, name, avatar) {
-  profileDescription.textContent = about;
-  profileHeader.textContent = name;
-  profileAvatar.src = avatar;
-}
+export const formAddCard = document.querySelector(".popup__form_addcard");
+export const formEditAvatar = document.querySelector(".popup__form_avatar");
 
-export function hideLoadingText(element) {
-  element.textContent = "Cохранить";
-}
-
-function checkResponse(res) {
-  if (!res.ok) return Promise.reject(`Ошибка ${res.status}`);
-  return res.json();
-}
-
-export function request(url, options) {
-  return fetch(url, options).then(checkResponse);
-}
-
+export const inputName = document.querySelector(".popup__input_type_name");
+export const inputStatus = document.querySelector(
+  ".popup__input_type_description"
+);
+export const buttonEditProfile = document.querySelector(
+  ".profile__edit-button"
+);
+export const buttonAddCard = document.querySelector(".profile__add-button");
